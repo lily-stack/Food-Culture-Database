@@ -3,7 +3,7 @@ A recipe sharing platform. Users can create accounts, submit recipes, view and r
 
 ![](burger.jpg)
 
-![](frontpage.jpg)
+<img src="frontpage.jpg" height="600"/>
 
 ## Pages:
 - Login page
