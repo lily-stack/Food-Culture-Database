@@ -3,6 +3,8 @@ A recipe sharing platform. Users can create accounts, submit recipes, view and r
 
 ![](burger.jpg)
 
+![](frontpage.jpg)
+
 ## Pages:
 - Login page
 - Homepage with world map
