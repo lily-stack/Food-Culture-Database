@@ -48,8 +48,3 @@ A recipe sharing platform. Users can create accounts, submit recipes, view and r
 Setup steps
 - cd into `server`
 - run `npm install`
-- run `npm run db:login`
-- run `npm run db:link`
-- run `npm run db:pull`
-
-After making any changes to the sql file, run `npm run db:push`
