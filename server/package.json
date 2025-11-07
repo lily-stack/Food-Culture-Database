@@ -6,9 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "db:login": "supabase login",
+    "db:logout": "supabase logout",
     "db:link": "supabase link --project-ref evbyikpcxfadeuitrmnw",
     "db:push": "supabase db push",
-    "db:pull": "supabase db pull"
+    "db:pull": "supabase db pull",
+    "db:migration": "supabase migration new"
   },
   "author": "",
   "license": "ISC",
