@@ -42,3 +42,13 @@ A recipe sharing platform. Users can create accounts, submit recipes, view and r
 - 12/2Fix bugs and implement smaller features like liking and rating, filtering, etc
 - 12/5 make slides and presentation
 - 12/8 Present
+
+## Local setup
+### server
+Setup steps
+- cd into `server`
+- run `npm run db:login`
+- run `npm run db:link`
+- run `npm run db:pull`
+
+After making any changes to the sql file, run `npm run db:push`
