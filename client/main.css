@@ -1,1 +1,24 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary-light: #FFC1E3;   /* light pink */
+  --color-primary: #FF69B4;         /* hot pink */
+  --color-primary-dark: #C2185B;    /* deep pink */
+
+  --color-secondary-light: #FFFFFF; /* white */
+  --color-secondary: #F8F8F8;       /* off-white */
+  --color-secondary-dark: #E0E0E0;  /* light gray for contrast */
+
+  --color-accent-light: #FFD6EC;
+  --color-accent: #FF85C1;
+  --color-accent-dark: #D81B60;
+}
+
+/* Optionally create utilities to use these colors */
+.bg-primary { background-color: var(--color-primary); }
+.bg-primary-light { background-color: var(--color-primary-light); }
+.bg-primary-dark { background-color: var(--color-primary-dark); }
+
+.text-primary { color: var(--color-primary); }
+.text-secondary { color: var(--color-secondary); }
+.text-accent { color: var(--color-accent); }
