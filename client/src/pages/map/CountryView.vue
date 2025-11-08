@@ -10,16 +10,21 @@
 </template>
 
 <script setup lang="ts">
-	const props = defineProps<{
-		countryName: string
-	}>();
-	const emit = defineEmits<{
-		(e: 'cancel'): void;
-	}>();
+import { countryNames, type CountryCode } from '@/types/country';
+import { computed } from 'vue';
 
-	function cancel() {
-		emit("cancel");
-	}
+const props = defineProps<{
+	countryCode: CountryCode
+}>();
+const emit = defineEmits<{
+	(e: 'cancel'): void;
+}>();
+
+const countryName = computed(() => countryNames[props.countryCode]);
+
+function cancel() {
+	emit("cancel");
+}
 </script>
 
 <style scoped></style>

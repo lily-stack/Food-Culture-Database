@@ -6,6 +6,7 @@
 import * as d3 from "d3";
 import { onMounted, ref } from "vue";
 import worldData from "./custom.geo.json";
+import type { CountryCode } from "@/types/country";
 
 // Constants
 const COUNTRY_FILL_COLOR = "#e5e7eb";
@@ -15,7 +16,7 @@ const COUNTRY_TEXT_COLOR = "#52525c";
 const BASE_FONT_SIZE = 6;
 
 const emit = defineEmits<{
-	(e: 'select', value: string | null): void;
+	(e: 'select', value: CountryCode | null): void;
 }>();
 
 // Types
@@ -85,6 +86,7 @@ onMounted(() => {
 		.on("click", (event, d) => {
 			event.stopPropagation();
 			const name = d.properties.sovereignt;
+			const iso_a2 = d.properties.iso_a2;
 
 			// Deselect previous
 			if (selected && selected !== event.currentTarget) {
@@ -98,7 +100,7 @@ onMounted(() => {
 			} else {
 				selected = event.currentTarget as SVGPathElement;
 				d3.select(selected).attr("fill", COUNTRY_HIGHLIGHT_COLOR);
-				emit("select", name);
+				emit("select", iso_a2);
 			}
 
 			// Zoom to country bounds
