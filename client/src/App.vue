@@ -4,7 +4,7 @@ import Navbar from './navbar/Navbar.vue';
 </script>
 
 <template>
-	<div class="bg h-screen overflow-auto">
+	<div class="bg h-screen overflow-auto gutter-stable">
 		<div class="bg-white max-w-6xl px-6 m-auto min-h-full border-x border-gray-200">
 			<Navbar class="sticky top-0" />
 			<div class="px-1 mt-2">
@@ -20,5 +20,8 @@ import Navbar from './navbar/Navbar.vue';
 <style scoped>
 .bg {
 	background: linear-gradient(to bottom, #fafafa, #f0f0f0);
+}
+.gutter-stable {
+	scrollbar-gutter: stable;
 }
 </style>

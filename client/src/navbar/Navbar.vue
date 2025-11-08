@@ -8,7 +8,16 @@
 			</div>
 			<div class="hidden sm:flex gap-8">
 				<RouterLink to="/">
-					<span class="hover:text-gray-800">Home</span>
+					<span class="hover:text-gray-800">
+						<i class="fa-solid fa-house"></i>
+						Home
+					</span>
+				</RouterLink>
+				<RouterLink to="/map">
+					<span class="hover:text-gray-800">
+						<i class="fa-solid fa-map"></i>
+						World Map
+					</span>
 				</RouterLink>
 				<RouterLink to="/search">
 					<span class="hover:text-gray-800">
