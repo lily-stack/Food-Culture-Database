@@ -85,8 +85,8 @@ onMounted(() => {
 		.attr("cursor", "pointer")
 		.on("click", (event, d) => {
 			event.stopPropagation();
-			const name = d.properties.sovereignt;
-			const iso_a2 = d.properties.iso_a2;
+			const name = d.properties.name_en;
+			const iso_a2 = d.properties.iso_a2 === '-99' ? d.properties.iso_a2_eh : d.properties.iso_a2;
 
 			// Deselect previous
 			if (selected && selected !== event.currentTarget) {
