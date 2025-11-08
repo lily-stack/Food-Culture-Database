@@ -1,4 +1,5 @@
 <template>
+	<img class="w-full h-[100px]" src="../../burger.jpg"></img>
 	<div class="flex flex-col gap-40">
 		<h1>Heading 1</h1>
 		<h2>Heading 2</h2>
