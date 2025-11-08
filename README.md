@@ -48,3 +48,10 @@ A recipe sharing platform. Users can create accounts, submit recipes, view and r
 Setup steps
 - cd into `server`
 - run `npm install`
+
+## By 11/11
+## Kyler = cognito and login page
+## Preston = router and navbar component
+## Grayden = User profile page
+## Lily = Recipe Page --> favicon change?
+ 
