@@ -14,7 +14,6 @@
   --color-accent-dark: #D81B60;
 }
 
-/* Optionally create utilities to use these colors */
 .bg-primary { background-color: var(--color-primary); }
 .bg-primary-light { background-color: var(--color-primary-light); }
 .bg-primary-dark { background-color: var(--color-primary-dark); }
@@ -22,3 +21,23 @@
 .text-primary { color: var(--color-primary); }
 .text-secondary { color: var(--color-secondary); }
 .text-accent { color: var(--color-accent); }
+
+h1 {
+	@apply text-4xl font-semibold;
+}
+
+h2 {
+	@apply text-3xl font-semibold;
+}
+
+h3 {
+	@apply text-2xl font-semibold;
+}
+
+h4 {
+	@apply text-xl font-semibold;
+}
+
+.clicky {
+	@apply text-blue-500 underline cursor-pointer hover:text-blue-400 transition-colors;
+}

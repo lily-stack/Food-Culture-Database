@@ -1,29 +1,24 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Navbar from './navbar/Navbar.vue';
+
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
-  <div class="flex w-[300px] h-[50px] bg-primary">
-  </div>
-  <div class="flex w-[300px] h-[50px] bg-primary-light">
-  </div>
-  <div class="flex w-[300px] h-[50px] bg-primary-dark">
-  </div>
-  <div class="flex w-[300px] h-[50px] bg-accent">
-  </div>
-  <div class="flex w-[300px] h-[50px] bg-accent-light">
-  </div>
-  <div class="flex w-[300px] h-[50px] bg-accent-dark">
-  </div>
-  <div class="flex w-[300px] h-[50px] bg-secondary">
-  </div>
-  <div class="flex w-[300px] h-[50px] bg-secondary-light">
-  </div>
-  <div class="flex w-[300px] h-[50px] bg-secondary-dark">
-  </div>
+	<div class="bg h-screen overflow-auto">
+		<div class="bg-white max-w-6xl px-6 m-auto min-h-full border-x border-gray-200">
+			<Navbar class="sticky top-0" />
+			<div class="px-1 mt-2">
+				<main>
+					<!-- Map a path to your page components in src/router/index.ts -->
+					<RouterView />
+				</main>
+			</div>
+		</div>
+	</div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.bg {
+	background: linear-gradient(to bottom, #fafafa, #f0f0f0);
+}
+</style>
