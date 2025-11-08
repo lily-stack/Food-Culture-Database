@@ -1,6 +1,5 @@
 <template>
-	<div ref="mapContainer"
-		class="w-full h-full bg-blue-200 rounded-xl cursor-grab active:cursor-grabbing overflow-hidden"></div>
+	<div ref="mapContainer" class="w-full h-full bg-blue-200 cursor-grab active:cursor-grabbing overflow-hidden"></div>
 </template>
 
 <script lang="ts" setup>
@@ -86,7 +85,7 @@ onMounted(() => {
 		.on("click", (event, d) => {
 			event.stopPropagation();
 			const name = d.properties.sovereignt;
-			
+
 			// Deselect previous
 			if (selected && selected !== event.currentTarget) {
 				d3.select(selected).attr("fill", COUNTRY_FILL_COLOR);
@@ -104,13 +103,18 @@ onMounted(() => {
 
 			// Zoom to country bounds
 			const [[x0, y0], [x1, y1]] = path.bounds(d);
-			const scale = Math.min(
+			let scale = Math.min(
 				8,
 				0.8 / Math.max((x1 - x0) / width, (y1 - y0) / height)
 			);
 
-			const targetX = width * 0.35;
-			const targetY = height / 2;
+			let targetX = width * 0.35;
+			let targetY = height / 2;
+
+			if (name === "Russia") {
+				targetX /= 12;
+				scale *= 1.8;
+			}
 
 			svg
 				.transition()
