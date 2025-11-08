@@ -128,6 +128,7 @@ onMounted(() => {
 		.attr("text-anchor", "middle")
 		.attr("fill", COUNTRY_TEXT_COLOR)
 		.attr("opacity", 0)
+		.attr("pointer-events", "none")
 		.text(d => d.properties.sovereignt)
 		.each(function (d) {
 			const [[x0, y0], [x1, y1]] = path.bounds(d);
