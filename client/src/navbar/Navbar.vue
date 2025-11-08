@@ -1,5 +1,5 @@
 <template>
-	<div class="py-4 flex justify-center">
+	<div class="py-4 flex justify-center z-20">
 		<div class="bg-white grow shadow-lg rounded-lg h-12 border border-gray-200 flex gap-2 items-center justify-between p-4 text-gray-600 transition-colors font-semibold">
 			<div class="basis-0 grow text-xl font-semibold select-none font-[Merriweather] text-black">
 				<span class="cursor-pointer">

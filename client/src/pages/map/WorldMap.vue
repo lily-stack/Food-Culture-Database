@@ -1,6 +1,6 @@
 <template>
 	<div ref="mapContainer"
-		class="w-full h-[600px] bg-blue-200 rounded-xl cursor-grab active:cursor-grabbing overflow-hidden"></div>
+		class="w-full h-full bg-blue-200 rounded-xl cursor-grab active:cursor-grabbing overflow-hidden"></div>
 </template>
 
 <script lang="ts" setup>
@@ -14,6 +14,10 @@ const COUNTRY_BORDER_COLOR = "#555";
 const COUNTRY_HIGHLIGHT_COLOR = "#f4f5ae";
 const COUNTRY_TEXT_COLOR = "#52525c";
 const BASE_FONT_SIZE = 6;
+
+const emit = defineEmits<{
+	(e: 'select', value: string | null): void;
+}>();
 
 // Types
 interface CountryFeatureProperties {
@@ -82,8 +86,7 @@ onMounted(() => {
 		.on("click", (event, d) => {
 			event.stopPropagation();
 			const name = d.properties.sovereignt;
-			console.log(name);
-
+			
 			// Deselect previous
 			if (selected && selected !== event.currentTarget) {
 				d3.select(selected).attr("fill", COUNTRY_FILL_COLOR);
@@ -92,17 +95,22 @@ onMounted(() => {
 			if (selected === event.currentTarget) {
 				d3.select(selected).attr("fill", COUNTRY_FILL_COLOR);
 				selected = null;
+				emit("select", null);
 			} else {
 				selected = event.currentTarget as SVGPathElement;
 				d3.select(selected).attr("fill", COUNTRY_HIGHLIGHT_COLOR);
+				emit("select", name);
 			}
 
 			// Zoom to country bounds
 			const [[x0, y0], [x1, y1]] = path.bounds(d);
 			const scale = Math.min(
 				8,
-				0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height)
+				0.8 / Math.max((x1 - x0) / width, (y1 - y0) / height)
 			);
+
+			const targetX = width * 0.35;
+			const targetY = height / 2;
 
 			svg
 				.transition()
@@ -110,7 +118,7 @@ onMounted(() => {
 				.call(
 					zoom.transform,
 					d3.zoomIdentity
-						.translate(width / 2, height / 2)
+						.translate(targetX, targetY)
 						.scale(scale)
 						.translate(-(x0 + x1) / 2, -(y0 + y1) / 2)
 				);
