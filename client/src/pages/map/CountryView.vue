@@ -6,12 +6,17 @@
 			</div>
 			<h1>{{ countryName }}</h1>
 		</div>
+		<div class="mt-4">
+			<SkeletonLoader v-if="isLoading" type="text" class="w-1/4" />
+			<p v-else class="text-gray-700">Found 0 dishes:</p>
+		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+import SkeletonLoader from '@/components/SkeletonLoader.vue';
 import { countryNames, type CountryCode } from '@/types/country';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 const props = defineProps<{
 	countryCode: CountryCode
@@ -19,6 +24,8 @@ const props = defineProps<{
 const emit = defineEmits<{
 	(e: 'cancel'): void;
 }>();
+
+const isLoading = ref<boolean>(true);
 
 const countryName = computed(() => countryNames[props.countryCode]);
 
