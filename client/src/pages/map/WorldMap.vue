@@ -9,7 +9,7 @@ import type { CountryCode } from "@/types/country";
 import type { MapResolution } from "./types";
 
 // Constants
-const COUNTRY_FILL_COLOR = "#e5e7eb";
+const COUNTRY_FILL_COLOR = "#faf7f2";
 const COUNTRY_BORDER_COLOR = "#555";
 const COUNTRY_HIGHLIGHT_COLOR = "#f4f5ae";
 const COUNTRY_TEXT_COLOR = "#52525c";
