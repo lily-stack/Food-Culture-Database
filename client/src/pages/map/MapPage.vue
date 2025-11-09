@@ -1,8 +1,11 @@
 <template>
 	<div class="fixed left-0 top-0 w-screen h-screen">
-		<WorldMap @select="onSelectCountry" />
-		<MapOptions class="absolute left-0 bottom-0" />
-		<p>Active country: {{ activeCountry }}</p>
+		<WorldMap
+			:resolution="mapResolution"
+			@select="onSelectCountry"
+		/>
+		<MapOptions class="absolute left-0 bottom-0" v-model:resolution="mapResolution" />
+		<p>Map resolution: {{ mapResolution }}</p>
 		<Transition
 			enter-active-class="transition-opacity duration-300"
 			enter-from-class="opacity-0"
@@ -27,8 +30,10 @@ import MapOptions from './MapOptions.vue';
 import WorldMap from './WorldMap.vue';
 import CountryView from './CountryView.vue';
 import type { CountryCode } from '@/types/country';
+import type { MapResolution } from './types';
 
 const activeCountry = ref<CountryCode | null>(null);
+const mapResolution = ref<MapResolution>("medium");
 
 function onSelectCountry(countryCode: CountryCode | null) {
 	activeCountry.value = countryCode;

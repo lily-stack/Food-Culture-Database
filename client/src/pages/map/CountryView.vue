@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-white rounded-lg shadow-lg p-4">
+	<div class="bg-white rounded-lg shadow-lg p-4 border border-gray-200">
 		<div>
 			<div class="float-right text-2xl mr-1 text-gray-800 cursor-pointer" @click="cancel">
 				<i class="fa-solid fa-xmark"></i>

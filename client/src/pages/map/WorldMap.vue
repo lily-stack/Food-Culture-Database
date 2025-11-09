@@ -4,9 +4,9 @@
 
 <script lang="ts" setup>
 import * as d3 from "d3";
-import { onMounted, ref } from "vue";
-import worldData from "./custom.geo.json";
+import { onMounted, ref, watchEffect } from "vue";
 import type { CountryCode } from "@/types/country";
+import type { MapResolution } from "./types";
 
 // Constants
 const COUNTRY_FILL_COLOR = "#e5e7eb";
@@ -15,6 +15,9 @@ const COUNTRY_HIGHLIGHT_COLOR = "#f4f5ae";
 const COUNTRY_TEXT_COLOR = "#52525c";
 const BASE_FONT_SIZE = 6;
 
+const props = defineProps<{
+	resolution: MapResolution
+}>();
 const emit = defineEmits<{
 	(e: 'select', value: CountryCode | null): void;
 }>();
@@ -33,8 +36,11 @@ interface CountryFeature extends GeoJSON.Feature<GeoJSON.Geometry, CountryFeatur
 const mapContainer = ref<HTMLDivElement | null>(null);
 let selected: SVGPathElement | null = null;
 
-onMounted(() => {
+function loadMap(worldData: any) {
 	if (!mapContainer.value) return;
+
+	// Clear previous map
+	d3.select(mapContainer.value).selectAll("*").remove();
 
 	const width = mapContainer.value.clientWidth;
 	const height = mapContainer.value.clientHeight;
@@ -154,7 +160,17 @@ onMounted(() => {
 				Math.max(1, 0.08 / Math.max(dx / width, dy / height))
 			);
 		});
-});
+}
+
+watchEffect(async () => {
+	let worldData;
+	if (props.resolution === 'medium') {
+		worldData = await import("./light.geo.json");
+	} else {
+		worldData = await import("./medium.geo.json");
+	}
+	loadMap(worldData);
+})
 </script>
 
 <style scoped></style>
