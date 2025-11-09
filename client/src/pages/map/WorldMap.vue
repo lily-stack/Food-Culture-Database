@@ -2,13 +2,16 @@
 	<div class="w-full h-full">
 		<div ref="mapContainer" class="w-full h-full bg-blue-200 cursor-grab active:cursor-grabbing overflow-hidden">
 		</div>
-		<div v-if="isLoading" class="fixed top-[50%] left-[50%] p-4 bg-white rounded-lg shadow-lg text-gray-700 border border-gray-200">Loading...</div>
+		<div v-if="isLoading"
+			class="fixed top-1/2 left-1/2 p-4 bg-white rounded-lg shadow-lg text-gray-700 border border-gray-200 transform -translate-x-1/2 -translate-y-1/2">
+			Loading...
+		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
 import * as d3 from "d3";
-import { onMounted, ref, watchEffect } from "vue";
+import { ref, watchEffect } from "vue";
 import type { CountryCode } from "@/types/country";
 import type { MapResolution } from "./types";
 
@@ -25,10 +28,11 @@ const props = defineProps<{
 const emit = defineEmits<{
 	(e: 'select', value: CountryCode | null): void;
 }>();
-const isLoading = ref<boolean>(true);
 defineExpose({
 	goToCountry
-})
+});
+
+const isLoading = ref<boolean>(true);
 
 // Types
 interface CountryFeatureProperties {
@@ -134,6 +138,14 @@ function loadMap(worldData: any) {
 	});
 }
 
+function deselectSelectedCountry() {
+	if (selected) {
+		d3.select(selected).attr("fill", COUNTRY_FILL_COLOR);
+		selected = null;
+		emit("select", null);
+	}
+}
+
 function selectCountry(element: SVGPathElement, d: CountryFeature) {
 	if (!mapContainer.value) return;
 	const name = d.properties.name_en;
@@ -145,9 +157,7 @@ function selectCountry(element: SVGPathElement, d: CountryFeature) {
 	}
 
 	if (selected === element) {
-		d3.select(selected).attr("fill", COUNTRY_FILL_COLOR);
-		selected = null;
-		emit("select", null);
+		deselectSelectedCountry();
 	} else {
 		selected = element;
 		d3.select(selected).attr("fill", COUNTRY_HIGHLIGHT_COLOR);
@@ -186,8 +196,12 @@ function selectCountry(element: SVGPathElement, d: CountryFeature) {
 		);
 }
 
-function goToCountry(countryName: string) {
+function goToCountry(countryName: string | null) {
 	if (!mapContainer.value) return;
+	if (countryName === null) {
+		deselectSelectedCountry()
+		return;
+	}
 
 	const svg = d3.select(mapContainer.value).select("svg");
 	const g = svg.select("g");

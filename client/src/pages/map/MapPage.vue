@@ -21,7 +21,7 @@
 			<div v-if="activeCountry !== null" class="absolute right-0 top-0 h-screen w-full sm:w-[70%] md:w-[40%] pt-20 pb-4 px-4">
 				<CountryView class="h-full"
 					:countryCode="activeCountry"
-					@cancel="activeCountry = null"
+					@cancel="onCountryViewClosed"
 				/>
 			</div>
 		</Transition>
@@ -40,12 +40,16 @@ const activeCountry = ref<CountryCode | null>(null);
 const mapResolution = ref<MapResolution>("medium");
 const worldMapRef = useTemplateRef("worldMapRef");
 
+function goToCountry(countryName: string | null) {
+	worldMapRef.value?.goToCountry(countryName);
+}
+
 function onSelectCountry(countryCode: CountryCode | null) {
 	activeCountry.value = countryCode;
 }
-
-function goToCountry(countryName: string) {
-	worldMapRef.value?.goToCountry(countryName);
+function onCountryViewClosed() {
+	activeCountry.value = null;
+	goToCountry(null)
 }
 
 </script>
