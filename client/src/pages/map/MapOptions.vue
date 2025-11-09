@@ -1,5 +1,5 @@
 <template>
-	<div class="w-[200px] bg-white mb-4 ml-4 rounded-lg shadow-lg flex px-2 py-1 text-sm">
+	<div class="w-[200px] bg-white mb-4 ml-4 rounded-lg shadow-lg flex px-2 py-1 text-sm border border-gray-200">
 		<div>
 			<strong>Map Resolution</strong>
 			<div class="flex gap-3">
