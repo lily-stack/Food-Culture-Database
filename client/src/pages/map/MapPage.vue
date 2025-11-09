@@ -1,10 +1,14 @@
 <template>
 	<div class="fixed left-0 top-0 w-screen h-screen">
-		<WorldMap
+		<WorldMap ref="worldMapRef"
 			:resolution="mapResolution"
 			@select="onSelectCountry"
 		/>
-		<MapOptions class="absolute left-0 bottom-0" v-model:resolution="mapResolution" />
+		<MapOptions
+			class="absolute left-0 bottom-0"
+			v-model:resolution="mapResolution"
+			@goToCountry="goToCountry"
+		/>
 		<p>Map resolution: {{ mapResolution }}</p>
 		<Transition
 			enter-active-class="transition-opacity duration-300"
@@ -25,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, useTemplateRef } from 'vue';
 import MapOptions from './MapOptions.vue';
 import WorldMap from './WorldMap.vue';
 import CountryView from './CountryView.vue';
@@ -34,9 +38,14 @@ import type { MapResolution } from './types';
 
 const activeCountry = ref<CountryCode | null>(null);
 const mapResolution = ref<MapResolution>("medium");
+const worldMapRef = useTemplateRef("worldMapRef");
 
 function onSelectCountry(countryCode: CountryCode | null) {
 	activeCountry.value = countryCode;
+}
+
+function goToCountry(countryName: string) {
+	worldMapRef.value?.goToCountry(countryName);
 }
 
 </script>

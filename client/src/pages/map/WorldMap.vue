@@ -1,5 +1,9 @@
 <template>
-	<div ref="mapContainer" class="w-full h-full bg-blue-200 cursor-grab active:cursor-grabbing overflow-hidden"></div>
+	<div class="w-full h-full">
+		<div ref="mapContainer" class="w-full h-full bg-blue-200 cursor-grab active:cursor-grabbing overflow-hidden">
+		</div>
+		<div v-if="isLoading" class="fixed top-[50%] left-[50%] p-4 bg-white rounded-lg shadow-lg text-gray-700 border border-gray-200">Loading...</div>
+	</div>
 </template>
 
 <script lang="ts" setup>
@@ -21,6 +25,10 @@ const props = defineProps<{
 const emit = defineEmits<{
 	(e: 'select', value: CountryCode | null): void;
 }>();
+const isLoading = ref<boolean>(true);
+defineExpose({
+	goToCountry
+})
 
 // Types
 interface CountryFeatureProperties {
@@ -35,6 +43,8 @@ interface CountryFeature extends GeoJSON.Feature<GeoJSON.Geometry, CountryFeatur
 // Map container
 const mapContainer = ref<HTMLDivElement | null>(null);
 let selected: SVGPathElement | null = null;
+let path: d3.GeoPath<any, CountryFeature>
+let zoom: any
 
 function loadMap(worldData: any) {
 	if (!mapContainer.value) return;
@@ -56,12 +66,12 @@ function loadMap(worldData: any) {
 		.scale(width / 6.3)
 		.translate([width / 2, height / 1.4]);
 
-	const path = d3.geoPath<CountryFeature>().projection(projection);
+	path = d3.geoPath<CountryFeature>().projection(projection);
 
 	const g = svg.append("g");
 
 	// Zoom behavior
-	const zoom = d3
+	zoom = d3
 		.zoom<SVGSVGElement, unknown>()
 		.scaleExtent([1, 8])
 		.on("zoom", (event: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
@@ -89,51 +99,9 @@ function loadMap(worldData: any) {
 		.attr("stroke", COUNTRY_BORDER_COLOR)
 		.attr("stroke-width", 0.5)
 		.attr("cursor", "pointer")
-		.on("click", (event, d) => {
+		.on("click", (event, d: CountryFeature) => {
 			event.stopPropagation();
-			const name = d.properties.name_en;
-			const iso_a2 = d.properties.iso_a2.length !== 2 ? d.properties.iso_a2_eh : d.properties.iso_a2;
-
-			// Deselect previous
-			if (selected && selected !== event.currentTarget) {
-				d3.select(selected).attr("fill", COUNTRY_FILL_COLOR);
-			}
-
-			if (selected === event.currentTarget) {
-				d3.select(selected).attr("fill", COUNTRY_FILL_COLOR);
-				selected = null;
-				emit("select", null);
-			} else {
-				selected = event.currentTarget as SVGPathElement;
-				d3.select(selected).attr("fill", COUNTRY_HIGHLIGHT_COLOR);
-				emit("select", iso_a2);
-			}
-
-			// Zoom to country bounds
-			const [[x0, y0], [x1, y1]] = path.bounds(d);
-			let scale = Math.min(
-				8,
-				0.8 / Math.max((x1 - x0) / width, (y1 - y0) / height)
-			);
-
-			let targetX = width * 0.35;
-			let targetY = height / 2;
-
-			if (name === "Russia") {
-				targetX /= 12;
-				scale *= 1.8;
-			}
-
-			svg
-				.transition()
-				.duration(750)
-				.call(
-					zoom.transform,
-					d3.zoomIdentity
-						.translate(targetX, targetY)
-						.scale(scale)
-						.translate(-(x0 + x1) / 2, -(y0 + y1) / 2)
-				);
+			selectCountry(event.currentTarget as SVGPathElement, d);
 		});
 
 	// Add country labels
@@ -160,9 +128,82 @@ function loadMap(worldData: any) {
 				Math.max(1, 0.08 / Math.max(dx / width, dy / height))
 			);
 		});
+
+	setTimeout(() => {
+		isLoading.value = false;
+	});
+}
+
+function selectCountry(element: SVGPathElement, d: CountryFeature) {
+	if (!mapContainer.value) return;
+	const name = d.properties.name_en;
+	const iso_a2 = d.properties.iso_a2.length !== 2 ? d.properties.iso_a2_eh : d.properties.iso_a2;
+
+	// Deselect previous
+	if (selected && selected !== element) {
+		d3.select(selected).attr("fill", COUNTRY_FILL_COLOR);
+	}
+
+	if (selected === element) {
+		d3.select(selected).attr("fill", COUNTRY_FILL_COLOR);
+		selected = null;
+		emit("select", null);
+	} else {
+		selected = element;
+		d3.select(selected).attr("fill", COUNTRY_HIGHLIGHT_COLOR);
+		emit("select", iso_a2);
+	}
+
+	const width = mapContainer.value.clientWidth;
+	const height = mapContainer.value.clientHeight;
+
+	// Zoom to country bounds
+	const [[x0, y0], [x1, y1]] = path.bounds(d);
+	let scale = Math.min(
+		8,
+		0.8 / Math.max((x1 - x0) / width, (y1 - y0) / height)
+	);
+
+	let targetX = width * 0.35;
+	let targetY = height / 2;
+
+	if (name === "Russia") {
+		targetX /= 12;
+		scale *= 1.8;
+	}
+
+	const svg = d3.select(mapContainer.value).select("svg");
+	const g = svg.select("g");
+	svg
+		.transition()
+		.duration(750)
+		.call(
+			zoom.transform,
+			d3.zoomIdentity
+				.translate(targetX, targetY)
+				.scale(scale)
+				.translate(-(x0 + x1) / 2, -(y0 + y1) / 2)
+		);
+}
+
+function goToCountry(countryName: string) {
+	if (!mapContainer.value) return;
+
+	const svg = d3.select(mapContainer.value).select("svg");
+	const g = svg.select("g");
+
+	const countryPath = g.selectAll<SVGPathElement, CountryFeature>("path")
+		.filter(d => d.properties.sovereignt.toLowerCase() === countryName.toLowerCase())
+		.node();
+
+	if (!countryPath) return;
+
+	const d = d3.select(countryPath).datum() as CountryFeature;
+	selectCountry(countryPath, d);
 }
 
 watchEffect(async () => {
+	isLoading.value = true;
 	let worldData;
 	if (props.resolution === 'medium') {
 		worldData = await import("./light.geo.json");
