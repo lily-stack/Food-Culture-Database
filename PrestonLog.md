@@ -5,5 +5,6 @@
 | 11/7/2025 | Set up tables in Supabase, initialized client code (Vite, Vue, TailwindCSS) | 3 |
 | 11/7/2025 | Created navbar and client router | 2 |
 | 11/8/2025 | Worked on Map page | 3 |
+| 11/9/2025 | Worked on Map page | 1 |
 
-Total 11 Hours
+Total 12 Hours
