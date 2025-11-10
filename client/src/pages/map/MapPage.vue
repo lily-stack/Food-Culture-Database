@@ -18,8 +18,8 @@
 			leave-from-class="opacity-100"
 			leave-to-class="opacity-0"
 		>
-			<div v-if="activeCountry !== null" class="absolute right-0 top-0 h-screen w-full sm:w-[70%] md:w-[40%] pt-20 pb-4 px-4">
-				<CountryView class="h-full"
+			<div v-if="activeCountry !== null" class="absolute right-0 bottom-0 w-full h-[60%] sm:h-screen sm:w-[70%] md:w-[40%] pt-20 pb-4 px-4 pointer-events-none">
+				<CountryView class="h-full pointer-events-auto"
 					:countryCode="activeCountry"
 					@cancel="onCountryViewClosed"
 				/>

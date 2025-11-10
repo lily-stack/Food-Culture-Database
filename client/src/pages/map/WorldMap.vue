@@ -176,6 +176,14 @@ function selectCountry(element: SVGPathElement, d: CountryFeature) {
 
 	let targetX = width * 0.35;
 	let targetY = height / 2;
+	const isSmallScreen = window.matchMedia('(max-width: 639px)').matches;
+	if (isSmallScreen) {
+		targetX = width / 2;
+		targetY = height / 3.8;
+	} else {
+		targetX = width * 0.35;
+		targetY = height / 2;
+	}
 
 	if (name === "Russia") {
 		targetX /= 12;
