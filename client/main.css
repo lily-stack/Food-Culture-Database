@@ -41,3 +41,13 @@ h4 {
 .clicky {
 	@apply text-blue-500 underline cursor-pointer hover:text-blue-400 transition-colors;
 }
+
+.fade-enter-from,
+.fade-appear-from {
+	opacity: 0;
+}
+
+.fade-enter-active,
+.fade-appear-active {
+	transition: opacity 300ms ease-in-out;
+}

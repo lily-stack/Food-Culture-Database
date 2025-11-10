@@ -8,16 +8,18 @@
 		</div>
 		<div class="mt-4">
 			<SkeletonLoader v-if="isLoading" type="text" class="w-1/4" />
-			<p v-else class="text-gray-700">Found 0 dishes:</p>
+			<Transition v-else  name="fade" appear>
+				<p class="text-gray-700">Found 0 dishes:</p>
+			</Transition>
 		</div>
-		<RecipeList class="mt-2" />
+		<RecipeList class="mt-2" :loading="isLoading" />
 	</div>
 </template>
 
 <script setup lang="ts">
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
 import { countryNames, type CountryCode } from '@/types/country';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import RecipeList from './RecipeList.vue';
 
 const props = defineProps<{
@@ -27,13 +29,25 @@ const emit = defineEmits<{
 	(e: 'cancel'): void;
 }>();
 
-const isLoading = ref<boolean>(false);
+const isLoading = ref<boolean>(true);
 
 const countryName = computed(() => countryNames[props.countryCode]);
 
 function cancel() {
 	emit("cancel");
 }
+
+let timeout: number | null = null;
+
+watch(() => props.countryCode, () => {
+	if (timeout) {
+		clearTimeout(timeout);
+	}
+	isLoading.value = true;
+	timeout = setTimeout(() => {
+		isLoading.value = false
+	}, 600);
+}, { immediate: true });
 </script>
 
 <style scoped></style>
