@@ -1,19 +1,22 @@
 <template>
-	<TransitionGroup name="fade" tag="div" class="flex flex-col gap-2 overflow-y-auto pb-2" appear>
-		<template v-if="loading">
-			<RecipeListItemSkeletonLoader
-				v-for="(_, index) in new Array(2)"
-			/>
-		</template>
-		<template v-else>
-			<RecipeListItem
-				v-for="(recipe, index) in fakeRecipes"
-				:key="recipe.title"
-				:imgSrc="recipe.imageSrc"
-				:title="recipe.title"
-			/>
-		</template>
-	</TransitionGroup>
+	<div class="flex flex-col gap-2 overflow-y-auto pb-2">
+		<TransitionGroup name="fade" appear>
+			<template v-if="loading">
+				<RecipeListItemSkeletonLoader
+					v-for="(_, index) in new Array(3)"
+					:key="index"
+				/>
+			</template>
+			<template v-else>
+				<RecipeListItem
+					v-for="(recipe, index) in fakeRecipes"
+					:key="recipe.title"
+					:imgSrc="recipe.imageSrc"
+					:title="recipe.title"
+				/>
+			</template>
+		</TransitionGroup>
+	</div>
 </template>
 
 <script setup lang="ts">

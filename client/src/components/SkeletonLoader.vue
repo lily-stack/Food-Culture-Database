@@ -1,6 +1,6 @@
 <template>
 	<div class="animate-pulse" :class="{
-		'h-6': type === 'text'
+		'h-[1.5em]': type === 'text'
 	}">
 		<div class="h-full bg-gray-300 rounded"></div>
 	</div>
