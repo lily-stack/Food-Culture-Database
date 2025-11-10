@@ -7,6 +7,8 @@
 </template>
 
 <script setup lang="ts">
+
+// Text will make it the height of text. Card will make it grow in height to fit its container.
 type SkeletonType = "text" | "card";
 
 const props = withDefaults(defineProps<{

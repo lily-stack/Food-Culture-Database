@@ -114,7 +114,19 @@ function loadMap(worldData: any) {
 		.enter()
 		.append("text")
 		.attr("transform", d => {
-			const [x, y] = path.centroid(d);
+			let [x, y] = path.centroid(d);
+			if (d.properties.sovereignt === "United States of America") {
+				x += 70;
+				y += 70;
+			} else if (d.properties.sovereignt === "Canada") {
+				x -= 40;
+				y += 75;
+			} else if (d.properties.sovereignt === "France") {
+				x += 15;
+				y -= 10;
+			} else if (d.properties.sovereignt === "Norway") {
+				y += 68;
+			}
 			return `translate(${x},${y})`;
 		})
 		.attr("text-anchor", "middle")
