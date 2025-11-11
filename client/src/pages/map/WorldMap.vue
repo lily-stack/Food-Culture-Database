@@ -22,6 +22,14 @@ const COUNTRY_HIGHLIGHT_COLOR = "#f4f5ae";
 const COUNTRY_TEXT_COLOR = "#52525c";
 const BASE_FONT_SIZE = 6;
 
+// Country name labels are placed in the center of the country's bounding rectangle. Sometimes
+// that doesn't look good. Exceptions go in here.
+const labelOffsets: Record<string, [number, number]> = {
+	"United States of America": [4, -5],
+	"Canada": [-10, 0],
+	"France": [9, 3]
+};
+
 const props = defineProps<{
 	resolution: MapResolution
 }>();
@@ -115,17 +123,17 @@ function loadMap(worldData: any) {
 		.append("text")
 		.attr("transform", d => {
 			let [x, y] = path.centroid(d);
-			if (d.properties.sovereignt === "United States of America") {
-				x += 70;
-				y += 70;
-			} else if (d.properties.sovereignt === "Canada") {
-				x -= 40;
-				y += 75;
-			} else if (d.properties.sovereignt === "France") {
-				x += 15;
-				y -= 10;
-			} else if (d.properties.sovereignt === "Norway") {
-				y += 68;
+			const offsets = labelOffsets[d.properties.sovereignt];
+			if (offsets) {
+				const [dLon, dLat] = offsets;
+				const center = d3.geoCentroid(d);
+				const [lon, lat] = center;
+				const proj = projection([lon + dLon, lat + dLat]);
+				if (proj) {
+					const [projX, projY] = proj;
+					x = projX;
+					y = projY;
+				}
 			}
 			return `translate(${x},${y})`;
 		})
