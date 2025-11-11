@@ -14,40 +14,57 @@
   --color-accent-dark: #D81B60;
 }
 
-.bg-primary { background-color: var(--color-primary); }
-.bg-primary-light { background-color: var(--color-primary-light); }
-.bg-primary-dark { background-color: var(--color-primary-dark); }
+.bg-primary {
+  background-color: var(--color-primary);
+}
 
-.text-primary { color: var(--color-primary); }
-.text-secondary { color: var(--color-secondary); }
-.text-accent { color: var(--color-accent); }
+.bg-primary-light {
+  background-color: var(--color-primary-light);
+}
+
+.bg-primary-dark {
+  background-color: var(--color-primary-dark);
+}
+
+.text-primary {
+  color: var(--color-primary);
+}
+
+.text-secondary {
+  color: var(--color-secondary);
+}
+
+.text-accent {
+  color: var(--color-accent);
+}
 
 h1 {
-	@apply text-4xl font-semibold;
+  @apply text-4xl font-semibold;
 }
 
 h2 {
-	@apply text-3xl font-semibold;
+  @apply text-3xl font-semibold;
 }
 
 h3 {
-	@apply text-2xl font-semibold;
+  @apply text-2xl font-semibold;
 }
 
 h4 {
-	@apply text-xl font-semibold;
+  @apply text-xl font-semibold;
 }
 
 .clicky {
-	@apply text-blue-500 underline cursor-pointer hover:text-blue-400 transition-colors;
+  @apply text-blue-500 underline cursor-pointer hover:text-blue-400 transition-colors;
 }
 
 .fade-enter-from,
 .fade-appear-from {
-	opacity: 0;
+  opacity: 0;
+  overflow: hidden;
 }
 
 .fade-enter-active,
 .fade-appear-active {
-	transition: opacity 300ms ease-in-out;
+  transition: opacity 300ms ease-in-out;
 }

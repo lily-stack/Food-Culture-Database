@@ -18,12 +18,12 @@ CREATE TABLE public.Follower (
   CONSTRAINT Follower_followee_id_fkey FOREIGN KEY (followee_id) REFERENCES public.User(user_id)
 );
 CREATE TABLE public.Ingredient (
-  ingredient_id bigint GENERATED ALWAYS AS IDENTITY NOT NULL UNIQUE,
+  ingredient_id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
   ingredient_name character varying NOT NULL,
   CONSTRAINT Ingredient_pkey PRIMARY KEY (ingredient_id)
 );
 CREATE TABLE public.Rating (
-  rating_id bigint GENERATED ALWAYS AS IDENTITY NOT NULL UNIQUE,
+  rating_id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
   recipe_id bigint NOT NULL,
   user_id uuid,
   score real,
@@ -32,7 +32,7 @@ CREATE TABLE public.Rating (
   CONSTRAINT Rating_recipe_id_fkey FOREIGN KEY (recipe_id) REFERENCES public.Recipe(recipe_id)
 );
 CREATE TABLE public.Recipe (
-  recipe_id bigint GENERATED ALWAYS AS IDENTITY NOT NULL UNIQUE,
+  recipe_id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
   user_id uuid NOT NULL,
   title character varying NOT NULL,
   dish_description text,
@@ -47,13 +47,13 @@ CREATE TABLE public.RecipeIngredient (
   ingredient_id bigint NOT NULL UNIQUE,
   amount_quantity numeric,
   CONSTRAINT RecipeIngredient_pkey PRIMARY KEY (recipe_id, ingredient_id),
-  CONSTRAINT RecipeIngredient_recipe_id_fkey FOREIGN KEY (recipe_id) REFERENCES public.Recipe(recipe_id),
-  CONSTRAINT RecipeIngredient_ingredient_id_fkey FOREIGN KEY (ingredient_id) REFERENCES public.Ingredient(ingredient_id)
+  CONSTRAINT RecipeIngredient_ingredient_id_fkey FOREIGN KEY (ingredient_id) REFERENCES public.Ingredient(ingredient_id),
+  CONSTRAINT RecipeIngredient_recipe_id_fkey FOREIGN KEY (recipe_id) REFERENCES public.Recipe(recipe_id)
 );
 CREATE TABLE public.RecipeTag (
-  recipe_id bigint GENERATED ALWAYS AS IDENTITY NOT NULL UNIQUE,
+  recipe_id bigint NOT NULL,
   tag_id bigint NOT NULL,
-  CONSTRAINT RecipeTag_pkey PRIMARY KEY (recipe_id),
+  CONSTRAINT RecipeTag_pkey PRIMARY KEY (recipe_id, tag_id),
   CONSTRAINT RecipeTag_tag_id_fkey FOREIGN KEY (tag_id) REFERENCES public.Tag(tag_id),
   CONSTRAINT RecipeTag_recipe_id_fkey FOREIGN KEY (recipe_id) REFERENCES public.Recipe(recipe_id)
 );
