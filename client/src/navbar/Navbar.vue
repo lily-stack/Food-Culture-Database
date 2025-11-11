@@ -2,6 +2,13 @@
 	<div class="py-4 flex justify-center z-20">
 		<div
 			class="bg-white grow shadow-lg rounded-lg h-12 border border-gray-200 flex gap-2 items-center justify-between px-4 py-2 text-gray-600 transition-colors font-semibold">
+			<div class="w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
+				<img 
+					src="/WorldFoodIcon.ico" 
+					alt="Recipe icon" 
+					class="w-full h-full object-cover object-center scale-125" 
+				/>
+			</div>
 			<div class="basis-0 grow text-xl font-semibold select-none font-[Merriweather] text-black">
 				<span class="cursor-pointer whitespace-nowrap">
 					<RouterLink to="/">Recipes Worldwide</RouterLink>
