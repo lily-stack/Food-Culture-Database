@@ -28,18 +28,57 @@
 					Search
 				</NavbarOption>
 			</div>
-			<div class="ml-1 basis-0 grow text-right truncate">
-				<span class="cursor-pointer hover:text-gray-800">
+			<div class="ml-1 basis-0 grow text-right whitespace-nowrap truncate">
+				<span class="cursor-pointer hover:text-gray-800" @click="openUserOptions">
 					<i class="fa-regular fa-user"></i>
 					Username
 				</span>
+				<Transition name="growin">
+					<UserDropdown v-if="isUserOptionsOpen" class="absolute right-0 top-17.5 text-left"
+						v-click-away="closeUserOptions" @close="closeUserOptions" />
+				</Transition>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import NavbarOption from './NavbarOption.vue';
+import UserDropdown from './NavbarDropdown.vue';
+
+const isUserOptionsOpen = ref<boolean>(false);
+
+function openUserOptions() {
+	isUserOptionsOpen.value = true;
+}
+function closeUserOptions() {
+	isUserOptionsOpen.value = false;
+}
 </script>
 
-<style scoped></style>
+<style scoped>
+.growin-enter-from,
+.growin-appear-from,
+.growin-leave-to {
+	opacity: 0;
+	transform: scale(0.95);
+}
+
+.growin-enter-to,
+.growin-appear-to {
+	opacity: 1;
+	transform: scale(1);
+}
+
+.growin-enter-active,
+.growin-appear-active {
+	transform-origin: top right;
+	transition: opacity 80ms ease-out, transform 80ms ease-out;
+}
+
+.growin-leave-active {
+	transform-origin: top right;
+	transition: opacity 80ms ease-in, transform 80ms ease-in;
+}
+</style>
