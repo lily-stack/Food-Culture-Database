@@ -1,10 +1,11 @@
 <template>
 	<div class="min-w-52 bg-white border border-gray-200 rounded-lg shadow-lg py-1 flex flex-col">
-		<div class="py-2 px-4 hover:bg-gray-100 transition-colors cursor-pointer" tabindex="0" @click="navigate('profile')">
+		<div class="py-2 px-4 hover:bg-gray-100 transition-colors cursor-pointer" tabindex="0"
+			@click="navigate('/profile')">
 			<i class="fa-solid fa-circle-user mr-0.5"></i>
 			Profile
 		</div>
-		<div class="py-2 px-4 hover:bg-gray-100 transition-colors cursor-pointer" tabindex="0">
+		<div class="py-2 px-4 hover:bg-gray-100 transition-colors cursor-pointer" tabindex="0" @click="handleLogout">
 			<i class="fa-solid fa-right-from-bracket mr-0.5 rotate-180"></i>
 			Log out
 		</div>
@@ -12,15 +13,20 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
+	import { useRouter } from 'vue-router';
 
-const emit = defineEmits(['close']);
-const router = useRouter();
+	const emit = defineEmits(['close', 'logout']);
+	const router = useRouter();
 
-function navigate(path: string) {
-	emit('close');
-	router.push({ path });
-}
+	function navigate(path: string) {
+		emit('close');
+		router.push({ path });
+	}
+
+	function handleLogout() {
+		emit('close');
+		emit('logout');
+	}
 </script>
 
 <style scoped></style>
