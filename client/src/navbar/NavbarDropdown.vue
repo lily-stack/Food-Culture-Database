@@ -1,7 +1,6 @@
 <template>
 	<div class="min-w-52 bg-white border border-gray-200 rounded-lg shadow-lg py-1 flex flex-col">
-		<div class="py-2 px-4 hover:bg-gray-100 transition-colors cursor-pointer" tabindex="0"
-			@click="navigate('/profile')">
+		<div class="py-2 px-4 hover:bg-gray-100 transition-colors cursor-pointer" tabindex="0" @click="navigate('/profile')">
 			<i class="fa-solid fa-circle-user mr-0.5"></i>
 			Profile
 		</div>
