@@ -25,13 +25,13 @@
 					Search
 				</NavbarOption>
 			</div>
-			<div class="ml-1 basis-0 grow text-right whitespace-nowrap truncate relative overflow-visible">
+			<div class="ml-1 basis-0 grow text-right whitespace-nowrap truncate">
 				<span class="cursor-pointer hover:text-gray-800" @click="openUserOptions">
 					<i class="fa-regular fa-user"></i>
 					{{ displayName }}
 				</span>
 				<Transition name="growin">
-					<NavbarDropdown v-if="isUserOptionsOpen" class="absolute -right-2 top-10.5 text-left"
+					<NavbarDropdown v-if="isUserOptionsOpen" class="absolute right-0 top-17.5 text-left"
 						v-click-away="closeUserOptions" @close="closeUserOptions" @logout="handleLogout" />
 				</Transition>
 			</div>
