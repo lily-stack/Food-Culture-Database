@@ -2,6 +2,7 @@ import Home from '@/pages/home/Home.vue'
 import MapPage from '@/pages/map/MapPage.vue'
 import RecipePage from '@/pages/recipes/RecipePage.vue'
 import CreateRecipe from '@/pages/recipes/CreateRecipe.vue'
+import NotFoundPage from '@/pages/notfound/NotFoundPage.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -9,8 +10,9 @@ const router = createRouter({
 	routes: [
 		{ path: '/', component: Home },
 		{ path: '/map', component: MapPage },
-		{ path: '/recipes/recipeid', component: RecipePage}, //path: '/recipes/:recipeid'
-		{ path: '/createRecipe', component: CreateRecipe}
+		{ path: '/recipes/:recipe_id', component: RecipePage},
+		{ path: '/createRecipe', component: CreateRecipe},
+		{ path: '/:pathMatch(.*)*', component: NotFoundPage}
 	],
 })
 
