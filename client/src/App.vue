@@ -2,8 +2,10 @@
 import { onMounted } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import Navbar from './navbar/Navbar.vue';
+import { useRoute } from 'vue-router';
 
 const authStore = useAuthStore();
+const route = useRoute();
 
 onMounted(async () => {
 	await authStore.checkAuthStatus();
@@ -25,7 +27,7 @@ onMounted(async () => {
 	<!-- Main App While Not Authenticating -->
 	<div v-else class="bg h-screen overflow-auto gutter-stable">
 		<div class="bg-white max-w-5xl px-6 m-auto min-h-full border-x border-gray-200">
-			<Navbar v-if="authStore.isAuthenticated" class="sticky top-0" />
+			<Navbar v-if="route.path !== '/auth'" class="sticky top-0" />
 			<div class="px-1 mt-2">
 				<main>
 					<!-- Map a path to your page components in src/router/index.ts -->
