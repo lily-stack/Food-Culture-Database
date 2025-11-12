@@ -8,11 +8,12 @@
 		</div>
 		<div class="mt-4">
 			<SkeletonLoader v-if="isLoading" type="text" class="w-1/4" />
-			<Transition v-else  name="fade" appear>
+			<Transition v-else name="fade" appear>
 				<p class="text-gray-700">Found 0 dishes:</p>
 			</Transition>
 		</div>
-		<RecipeList class="mt-2" :loading="isLoading" />
+		<PaginatedRecipeList class="mt-2 grow" :loading="isLoading" :current-page="currentPage"
+			@change-page="handleChangePage" />
 	</div>
 </template>
 
@@ -20,7 +21,9 @@
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
 import { countryNames, type CountryCode } from '@/types/country';
 import { computed, ref, watch } from 'vue';
-import RecipeList from './RecipeList.vue';
+import PaginatedRecipeList from './PaginatedRecipeList.vue';
+// import RecipeList from './RecipeList.vue';
+
 
 const props = defineProps<{
 	countryCode: CountryCode
@@ -30,6 +33,7 @@ const emit = defineEmits<{
 }>();
 
 const isLoading = ref<boolean>(true);
+const currentPage = ref<number>(1);
 
 const countryName = computed(() => countryNames[props.countryCode]);
 
@@ -37,16 +41,26 @@ function cancel() {
 	emit("cancel");
 }
 
-let timeout: number | null = null;
+const fakeLoad = (() => {
+	let timeout: number | null = null;
+	return function () {
+		if (timeout) {
+			clearTimeout(timeout);
+		}
+		isLoading.value = true;
+		timeout = setTimeout(() => {
+			isLoading.value = false
+		}, 600);
+	}
+})();
+
+function handleChangePage(page: number) {
+	currentPage.value = page;
+	fakeLoad();
+}
 
 watch(() => props.countryCode, () => {
-	if (timeout) {
-		clearTimeout(timeout);
-	}
-	isLoading.value = true;
-	timeout = setTimeout(() => {
-		isLoading.value = false
-	}, 600);
+	fakeLoad();
 }, { immediate: true });
 </script>
 
