@@ -153,9 +153,14 @@ function loadMap(worldData: any) {
 			);
 		});
 
-	setTimeout(() => {
-		isLoading.value = false;
-	});
+	const initialTransform = d3.zoomIdentity;
+	g.attr("transform", initialTransform.toString());
+	g.attr("stroke-width", 1 / initialTransform.k);
+	g.selectAll<SVGTextElement, CountryFeature>("text")
+		.attr("font-size", d => `${BASE_FONT_SIZE / initialTransform.k * 2}px`)
+		.attr("opacity", d => (initialTransform.k >= (d.minZoomForLabel ?? 1) ? 1 : 0));
+
+	isLoading.value = false;
 }
 
 function deselectSelectedCountry() {
