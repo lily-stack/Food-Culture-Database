@@ -30,7 +30,7 @@ const router = createRouter({
 		{
 			path: '/auth',
 			component: LoginRegister,
-			meta: { requiresAuth: false }
+			meta: { requiresAuth: false, ignorePageLayout: true }
 		},
 		{ path: '/login', redirect: '/auth' },
 		{ path: '/register', redirect: '/auth' },

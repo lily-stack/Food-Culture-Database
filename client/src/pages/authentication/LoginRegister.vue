@@ -1,8 +1,8 @@
 <template>
-    <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4">
+    <div class="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-50 to-indigo-100 px-4">
         <div class="bg-white shadow-lg rounded-lg border border-gray-200 p-8 max-w-md w-full">
             <div class="flex items-center justify-center mb-6">
-                <div class="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
+                <div class="w-16 h-16 rounded-full overflow-hidden shrink-0">
                     <img src="/WorldFoodIcon.ico" alt="Recipe icon"
                         class="w-full h-full object-cover object-center scale-125" />
                 </div>
