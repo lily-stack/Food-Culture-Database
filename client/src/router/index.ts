@@ -3,6 +3,7 @@ import MapPage from '@/pages/map/MapPage.vue'
 import RecipePage from '@/pages/recipes/RecipePage.vue'
 import CreateRecipe from '@/pages/recipes/CreateRecipe.vue'
 import LoginRegister from '@/pages/authentication/LoginRegister.vue'
+import NotFoundPage from '@/pages/notfound/NotFoundPage.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
@@ -32,7 +33,8 @@ const router = createRouter({
 			meta: { requiresAuth: false }
 		},
 		{ path: '/login', redirect: '/auth' },
-		{ path: '/register', redirect: '/auth' }
+		{ path: '/register', redirect: '/auth' },
+		{ path: '/:pathMatch(.*)*', component: NotFoundPage }
 	],
 })
 

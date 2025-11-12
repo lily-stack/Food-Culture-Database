@@ -48,7 +48,7 @@ const fakeLoad = (() => {
 			clearTimeout(timeout);
 		}
 		isLoading.value = true;
-		timeout = setTimeout(() => {
+		timeout = window.setTimeout(() => {
 			isLoading.value = false
 		}, 600);
 	}
