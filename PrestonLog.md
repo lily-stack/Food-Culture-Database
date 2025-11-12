@@ -6,5 +6,6 @@
 | 11/7/2025 | Created navbar and client router | 2 |
 | 11/8/2025 | Worked on Map page | 3 |
 | 11/9/2025 | Worked on Map page | 1 |
+| 11/12/2025 | Worked on Map page, navbar | 3 |
 
-Total 12 Hours
+Total 15 Hours
