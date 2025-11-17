@@ -5,6 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+
     "db:login": "supabase login",
     "db:logout": "supabase logout",
     "db:link": "supabase link --project-ref evbyikpcxfadeuitrmnw",
@@ -15,6 +20,13 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "supabase": "^2.54.11"
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.1",
+    "supabase": "^2.54.11",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
   }
 }
