@@ -1,5 +1,6 @@
 import Home from '@/pages/home/Home.vue'
 import MapPage from '@/pages/map/MapPage.vue'
+import UserPage from '@/pages/user/UserPage.vue'
 import RecipePage from '@/pages/recipes/RecipePage.vue'
 import CreateRecipe from '@/pages/recipes/CreateRecipe.vue'
 import LoginRegister from '@/pages/authentication/LoginRegister.vue'
@@ -32,10 +33,43 @@ const router = createRouter({
 			component: LoginRegister,
 			meta: { requiresAuth: false, ignorePageLayout: true }
 		},
+		{
+			path: '/profile',
+			component: UserPage,
+			meta: { requiresAuth: true }
+		},
 		{ path: '/login', redirect: '/auth' },
 		{ path: '/register', redirect: '/auth' },
 		{ path: '/:pathMatch(.*)*', component: NotFoundPage }
 	],
+})
+
+router.beforeEach(async (to, from, next) => {
+	const authStore = useAuthStore()
+
+	const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+
+	if (!requiresAuth) {
+		next()
+		return
+	}
+
+	if (authStore.isCheckingAuth) {
+		await new Promise<void>((resolve) => {
+			const interval = setInterval(() => {
+				if (!authStore.isCheckingAuth) {
+					clearInterval(interval)
+					resolve()
+				}
+			}, 50)
+		})
+	}
+
+	if (authStore.isAuthenticated) {
+		next()
+	} else {
+		next('/auth')
+	}
 })
 
 router.beforeEach(async (to, from, next) => {
