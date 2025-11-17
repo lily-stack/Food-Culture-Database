@@ -49,9 +49,9 @@ Setup steps
 - cd into `server`
 - run `npm install`
 
-## By 11/11
-## Kyler = cognito and login page
-## Preston = router and navbar component
-## Grayden = User profile page
-## Lily = Recipe Page --> favicon change?
+## By 11/18
+## Kyler = add login capability and continue as guest
+## Preston = expressjs code --> backend
+## Grayden = S3 --> 1 bucket with folders
+## Lily = welcome page = home --> recipe of the day --> search page --> natural language ai, filtering
  
