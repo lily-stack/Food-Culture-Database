@@ -5,6 +5,7 @@
 | 11/7/2025 | Finished erd, and database set-up. Planned out specific goals for next time and got vue and vite connections working | 3 |
 | 11/10/2025 | Found possible icon for site, created recipe page, created create recipe page | 3 |
 | 11/11/2025 | add Country and RecipeCountry table to erd and database and add to recipe page add edit button and route| 1.5 |
+| 11/16/2025 | Make form component for create and edit recipe page, make the edit page, fix cliackability of buttons and routing| 2 |
 
 
-total hours 10.5
+total hours 12.5

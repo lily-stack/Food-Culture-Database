@@ -1,6 +1,7 @@
 import Home from '@/pages/home/Home.vue'
 import MapPage from '@/pages/map/MapPage.vue'
 import RecipePage from '@/pages/recipes/RecipePage.vue'
+import EditRecipe from '@/pages/recipes/EditRecipe.vue'
 import CreateRecipe from '@/pages/recipes/CreateRecipe.vue'
 import LoginRegister from '@/pages/authentication/LoginRegister.vue'
 import NotFoundPage from '@/pages/notfound/NotFoundPage.vue'
@@ -25,6 +26,11 @@ const router = createRouter({
 		{
 			path: '/createRecipe',
 			component: CreateRecipe,
+			meta: { requiresAuth: true }
+		},
+		{
+			path: '/editRecipe/recipeid',
+			component: EditRecipe,
 			meta: { requiresAuth: true }
 		},
 		{

@@ -14,7 +14,7 @@
           <span v-if="state.recipe.servings">🍽 Serves {{ state.recipe.servings }}</span>
           <span v-if="state.recipe.rating">⭐ {{ state.recipe.rating }}</span>
 
-          <button @click="toggleFavorite" class="flex items-center gap-1 focus:outline-none">
+          <button @click="toggleFavorite" class="cursor-pointer flex items-center gap-1 focus:outline-none">
             <svg v-if="!state.isFavorited" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500 hover:text-red-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 21.682l-7.682-7.682a4.5 4.5 0 010-6.364z" />
             </svg>
@@ -51,7 +51,7 @@
           <button
             v-if="state.isCreator"
             @click="goToEdit"
-            class="flex items-center gap-2 bg-orange-700 hover:bg-orange-600 text-white px-3 py-1.5 rounded-md shadow-2xl transition-colors focus:outline-none"
+            class="cursor-pointer flex items-center gap-2 bg-orange-700 hover:bg-orange-600 text-white px-3 py-1.5 rounded-md shadow-2xl transition-colors focus:outline-none"
           >
             Edit Recipe
           </button>
@@ -179,7 +179,8 @@ async function findIsCreator() {
 
 const goToEdit = () => {
   if (state.recipe) {
-    state.router.push(`/recipes/${state.recipe.recipe_id}/edit`)
+    state.router.push(`/editRecipe/recipeid`)
+    //state.router.push(`/editRecipe/${state.recipe.recipe_id}`)
   }
 }
 
