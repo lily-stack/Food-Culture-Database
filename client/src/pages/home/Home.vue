@@ -1,32 +1,33 @@
 <template>
 	<img class="w-full h-[100px]" src="../../burger.jpg"></img>
-	<div class="flex flex-col gap-40">
-		<h1>Heading 1</h1>
-		<h2>Heading 2</h2>
-		<h3>Heading 3</h3>
-		<h4>Heading 4</h4>
-	</div>
-	<div class="flex w-[300px] h-[50px] bg-primary">
-	</div>
-	<div class="flex w-[300px] h-[50px] bg-primary-light">
-	</div>
-	<div class="flex w-[300px] h-[50px] bg-primary-dark">
-	</div>
-	<div class="flex w-[300px] h-[50px] bg-accent">
-	</div>
-	<div class="flex w-[300px] h-[50px] bg-accent-light">
-	</div>
-	<div class="flex w-[300px] h-[50px] bg-accent-dark">
-	</div>
-	<div class="flex w-[300px] h-[50px] bg-secondary">
-	</div>
-	<div class="flex w-[300px] h-[50px] bg-secondary-light">
-	</div>
-	<div class="flex w-[300px] h-[50px] bg-secondary-dark">
+	<div class="mt-2">
+		<h2 v-if="requestReceived === true">
+			API connection working!
+		</h2>
+		<h2 v-else-if="requestReceived === false">
+			API connection failed. Run npm run dev in the server directory to start it
+		</h2>
+		<h2 v-else>
+			Testing connection to API...
+		</h2>
 	</div>
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
+
+
+const requestReceived = ref<boolean | undefined>(undefined);
+
+onMounted(() => {
+	fetch('/api/test').then(response => {
+		if (response.ok) {
+			requestReceived.value = true;
+		} else {
+			requestReceived.value = false;
+		}
+	})
+})
 </script>
 
 
