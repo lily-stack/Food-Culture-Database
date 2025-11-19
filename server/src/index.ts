@@ -1,13 +1,15 @@
-import express, { Request, Response, Router } from "express";
-import { TestType } from "shared";
+import express, { Request, Response } from "express";
+import { router as recipeRouter } from "./routes/recipes";
 
 const app = express();
 app.use(express.json());
-const apiRouter = Router();
+const apiRouter = express.Router();
 
 apiRouter.get("/test", (req: Request, res: Response) => {
   res.send("hi");
 });
+
+apiRouter.use("/recipes", recipeRouter);
 
 app.use("/api", apiRouter);
 app.listen(6767, () => console.log("server up"));
