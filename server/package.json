@@ -27,6 +27,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "shared": "file:../shared",
     "express": "^5.1.0"
   }
 }

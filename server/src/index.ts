@@ -1,4 +1,5 @@
 import express, { Request, Response, Router } from "express";
+import { TestType } from "shared";
 
 const app = express();
 app.use(express.json());
