@@ -12,8 +12,8 @@
 <script lang="ts" setup>
 import * as d3 from "d3";
 import { ref, watchEffect } from "vue";
-import type { CountryCode } from "@/types/country";
 import type { MapResolution } from "./types";
+import type { CountryCode } from "shared";
 
 // Constants
 const COUNTRY_FILL_COLOR = "#faf7f2";

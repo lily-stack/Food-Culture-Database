@@ -9,21 +9,23 @@
 		<div class="mt-4">
 			<SkeletonLoader v-if="isLoading" type="text" class="w-1/4" />
 			<Transition v-else name="fade" appear>
-				<p class="text-gray-700">Found 0 dishes:</p>
+				<p class="text-gray-700">Found {{ numPages }} dishes:</p>
 			</Transition>
 		</div>
-		<PaginatedRecipeList class="mt-2 grow" :loading="isLoading" :current-page="currentPage"
+		<PaginatedRecipeList
+			class="mt-2 grow"
+			:recipes="recipes"
+			:current-page="currentPage"
 			@change-page="handleChangePage" />
 	</div>
 </template>
 
 <script setup lang="ts">
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
-import { countryNames, type CountryCode } from '@/types/country';
 import { computed, ref, watch } from 'vue';
 import PaginatedRecipeList from './PaginatedRecipeList.vue';
-// import RecipeList from './RecipeList.vue';
-
+import type { CountryCode, RecipeDTO } from 'shared';
+import { getCountryName } from '@/util/country/country';
 
 const props = defineProps<{
 	countryCode: CountryCode
@@ -34,33 +36,39 @@ const emit = defineEmits<{
 
 const isLoading = ref<boolean>(true);
 const currentPage = ref<number>(1);
+const numPages = ref<number | undefined>(undefined);
+const recipes = ref<RecipeDTO[] | undefined>(undefined);
 
-const countryName = computed(() => countryNames[props.countryCode]);
+const countryName = computed(() => getCountryName(props.countryCode));
 
 function cancel() {
 	emit("cancel");
 }
 
-const fakeLoad = (() => {
-	let timeout: number | null = null;
-	return function () {
-		if (timeout) {
-			clearTimeout(timeout);
-		}
-		isLoading.value = true;
-		timeout = window.setTimeout(() => {
-			isLoading.value = false
-		}, 600);
-	}
-})();
-
 function handleChangePage(page: number) {
 	currentPage.value = page;
-	fakeLoad();
+}
+
+async function loadRecipes() {
+	isLoading.value = true;
+	recipes.value = undefined;
+	numPages.value = undefined;
+	try {
+		const result = await fetch(`/api/recipes?country=${props.countryCode.toLowerCase()}&limit=10`);
+		if (result.ok) {
+			const res = await result.json() as RecipeDTO[];
+			recipes.value = res;
+			numPages.value = 999;
+		} else {
+			alert('failure')
+		}
+	} finally {
+		isLoading.value = false;
+	}
 }
 
 watch(() => props.countryCode, () => {
-	fakeLoad();
+	loadRecipes();
 }, { immediate: true });
 </script>
 
