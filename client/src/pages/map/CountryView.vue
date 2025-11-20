@@ -9,15 +9,14 @@
 		<div class="mt-4">
 			<SkeletonLoader v-if="isLoading" type="text" class="w-1/4" />
 			<Transition v-else name="fade" appear>
-				<p class="text-gray-700">Found {{ totalRecipes }} dishes:</p>
+				<p class="text-gray-700">Found {{ totalRecipes ?? 0 }} dishes:</p>
 			</Transition>
 		</div>
-		<PaginatedRecipeList
-			class="mt-2 grow"
-			:recipes="recipes"
-			:num-pages="totalPages"
-			:current-page="currentPage"
-			@change-page="handleChangePage" />
+		<PaginatedRecipeList v-if="!error" class="mt-2 grow" :recipes="recipes" :num-pages="totalPages"
+			:current-page="currentPage" @change-page="handleChangePage" />
+		<div v-else class="m-auto text-red-500">
+			{{ error }}
+		</div>
 	</div>
 </template>
 
@@ -40,6 +39,7 @@ const currentPage = ref<number>(1);
 const totalPages = ref<number | undefined>(undefined);
 const totalRecipes = ref<number | undefined>(undefined)
 const recipes = ref<RecipeDTO[] | undefined>(undefined);
+const error = ref<string | undefined>(undefined);
 
 const countryName = computed(() => getCountryName(props.countryCode));
 
@@ -55,22 +55,25 @@ async function loadRecipes() {
 	isLoading.value = true;
 	recipes.value = undefined;
 	totalPages.value = undefined;
+	error.value = undefined;
 	try {
-		const result = await fetch(`/api/recipes?country=${props.countryCode.toLowerCase()}&limit=10`);
-		if (result.ok) {
-			const res = await result.json() as PaginatedRecipesResponse;
-			recipes.value = res.recipes;
-			totalRecipes.value = res.totalItems;
-			totalPages.value = res.totalPages;
-		} else {
-			alert('failure')
-		}
+		const response = await fetch(`/api/recipes?country=${props.countryCode.toLowerCase()}&limit=10`);
+		if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+		const res = await response.json() as PaginatedRecipesResponse;
+		recipes.value = res.recipes;
+		totalRecipes.value = res.totalItems;
+		totalPages.value = res.totalPages;
+	} catch (err) {
+		console.error(err);
+		error.value = "An error occured. Please try again.";
 	} finally {
 		isLoading.value = false;
 	}
 }
 
 watch(() => props.countryCode, () => {
+	currentPage.value = 1;
 	loadRecipes();
 }, { immediate: true });
 </script>
