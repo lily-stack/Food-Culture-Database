@@ -1,7 +1,11 @@
 import express, { Request, Response } from "express";
-import { PaginatedRecipesResponse, RecipeDTO } from "shared";
-const router = express.Router();
+import { CountryCode, PaginatedRecipesResponse, RecipeDTO } from "shared";
+import { RecipeService } from "../service/recipe/RecipeService";
+import { FakeRecipeService } from "../service/recipe/FakeRecipeService";
 
+const recipeService: RecipeService = new FakeRecipeService();
+
+const router = express.Router();
 router.get('/', getRecipes);
 router.get('/:id', getRecipeById);
 
@@ -10,36 +14,19 @@ interface RecipesQuery {
 	page?: number
 	limit?: number
 }
-function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response) {
-	const { country, page, limit } = req.query;
+async function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response) {
+	const { country, page, limit } = req.query as {
+		country?: CountryCode
+		page?: string
+		limit?: string
+	};
 
-	const recipes: RecipeDTO[] = [
-		{
-			recipe_id: 0,
-			user_id: '0',
-			title: "Test Recipe 1",
-			dish_description: "Description!!!",
-			creation_date: 0,
-			cooking_time: 0,
-			servings: 0,
-			recipe_steps: "step 1;",
-			img_src: "https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_4:3/k%2FPhoto%2FRecipes%2F2024-03-bimbimbap%2Fbibimbap-074",
-			ratings: 1000
-		},
-		{
-			recipe_id: 1,
-			user_id: '0',
-			title: "Test Recipe 2",
-			dish_description: "Description!!!",
-			creation_date: 0,
-			cooking_time: 0,
-			servings: 0,
-			recipe_steps: "step 1;",
-			img_src: "https://www.beyondkimchee.com/wp-content/uploads/2023/11/jajangmyeon-black-bean-noodles-thumbnail.jpg",
-			ratings: 900
-		}
-	]
+	if (!country) {
+		res.status(400);
+		return;
+	}
 
+	const recipes = await recipeService.getRecipesByCountry(country);
 	const body: PaginatedRecipesResponse = {
 		recipes,
 		page: 1,

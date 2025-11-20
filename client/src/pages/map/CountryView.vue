@@ -9,7 +9,7 @@
 		<div class="mt-4">
 			<SkeletonLoader v-if="isLoading" type="text" class="w-1/4" />
 			<Transition v-else name="fade" appear>
-				<p class="text-gray-700">Found {{ totalPages }} dishes:</p>
+				<p class="text-gray-700">Found {{ totalRecipes }} dishes:</p>
 			</Transition>
 		</div>
 		<PaginatedRecipeList
@@ -38,6 +38,7 @@ const emit = defineEmits<{
 const isLoading = ref<boolean>(true);
 const currentPage = ref<number>(1);
 const totalPages = ref<number | undefined>(undefined);
+const totalRecipes = ref<number | undefined>(undefined)
 const recipes = ref<RecipeDTO[] | undefined>(undefined);
 
 const countryName = computed(() => getCountryName(props.countryCode));
@@ -59,6 +60,7 @@ async function loadRecipes() {
 		if (result.ok) {
 			const res = await result.json() as PaginatedRecipesResponse;
 			recipes.value = res.recipes;
+			totalRecipes.value = res.totalItems;
 			totalPages.value = res.totalPages;
 		} else {
 			alert('failure')

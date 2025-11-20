@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-col gap-2 overflow-y-auto pb-2">
+	<div class="flex flex-col gap-2.5 overflow-y-auto pb-2">
 		<TransitionGroup name="fade" appear>
 			<template v-if="isLoading">
 				<RecipeListItemSkeletonLoader
@@ -8,17 +8,22 @@
 				/>
 			</template>
 			<template v-else>
-				<RecipeListItem
-					v-for="(recipe, index) in recipes"
-					:key="recipe.title"
-					:recipeId="recipe.recipe_id"
-					:title="recipe.title"
-					:description="recipe.dish_description"
-					:imgSrc="recipe.img_src"
-					:ratings="recipe.ratings"
-					:servings="recipe.servings"
-					:cookingTime="recipe.cooking_time"
-				/>
+				<template v-if="recipes && recipes.length">
+					<RecipeListItem
+						v-for="(recipe, index) in recipes"
+						:key="recipe.title"
+						:recipeId="recipe.recipe_id"
+						:title="recipe.title"
+						:description="recipe.dish_description"
+						:imgSrc="recipe.img_src"
+						:ratings="recipe.ratings"
+						:servings="recipe.servings"
+						:cookingTime="recipe.cooking_time"
+					/>
+				</template>
+				<template v-else>
+					<span class="text-gray-700 m-auto">No recipes found</span>
+				</template>
 			</template>
 		</TransitionGroup>
 	</div>
