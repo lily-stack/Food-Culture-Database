@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { RecipeDTO } from "shared";
+import { PaginatedRecipesResponse, RecipeDTO } from "shared";
 const router = express.Router();
 
 router.get('/', getRecipes);
@@ -13,7 +13,7 @@ interface RecipesQuery {
 function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response) {
 	const { country, page, limit } = req.query;
 
-	const body: RecipeDTO[] = [
+	const recipes: RecipeDTO[] = [
 		{
 			recipe_id: 0,
 			user_id: '0',
@@ -39,6 +39,14 @@ function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response) {
 			ratings: 900
 		}
 	]
+
+	const body: PaginatedRecipesResponse = {
+		recipes,
+		page: 1,
+		pageSize: 10,
+		totalItems: 2,
+		totalPages: 1
+	}
 	res.status(200).json(body);
 }
 

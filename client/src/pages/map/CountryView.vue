@@ -9,12 +9,13 @@
 		<div class="mt-4">
 			<SkeletonLoader v-if="isLoading" type="text" class="w-1/4" />
 			<Transition v-else name="fade" appear>
-				<p class="text-gray-700">Found {{ numPages }} dishes:</p>
+				<p class="text-gray-700">Found {{ totalPages }} dishes:</p>
 			</Transition>
 		</div>
 		<PaginatedRecipeList
 			class="mt-2 grow"
 			:recipes="recipes"
+			:num-pages="totalPages"
 			:current-page="currentPage"
 			@change-page="handleChangePage" />
 	</div>
@@ -24,7 +25,7 @@
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
 import { computed, ref, watch } from 'vue';
 import PaginatedRecipeList from './PaginatedRecipeList.vue';
-import type { CountryCode, RecipeDTO } from 'shared';
+import type { CountryCode, PaginatedRecipesResponse, RecipeDTO } from 'shared';
 import { getCountryName } from '@/util/country/country';
 
 const props = defineProps<{
@@ -36,7 +37,7 @@ const emit = defineEmits<{
 
 const isLoading = ref<boolean>(true);
 const currentPage = ref<number>(1);
-const numPages = ref<number | undefined>(undefined);
+const totalPages = ref<number | undefined>(undefined);
 const recipes = ref<RecipeDTO[] | undefined>(undefined);
 
 const countryName = computed(() => getCountryName(props.countryCode));
@@ -52,13 +53,13 @@ function handleChangePage(page: number) {
 async function loadRecipes() {
 	isLoading.value = true;
 	recipes.value = undefined;
-	numPages.value = undefined;
+	totalPages.value = undefined;
 	try {
 		const result = await fetch(`/api/recipes?country=${props.countryCode.toLowerCase()}&limit=10`);
 		if (result.ok) {
-			const res = await result.json() as RecipeDTO[];
-			recipes.value = res;
-			numPages.value = 999;
+			const res = await result.json() as PaginatedRecipesResponse;
+			recipes.value = res.recipes;
+			totalPages.value = res.totalPages;
 		} else {
 			alert('failure')
 		}

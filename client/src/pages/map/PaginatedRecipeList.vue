@@ -1,7 +1,7 @@
 <template>
 	<div class="flex flex-col">
 		<RecipeList class="basis-0 min-h-0 grow" :recipes="recipes" />
-		<PageController :numPages="8" :current-page="currentPage" @update:current-page="onChangePage" />
+		<PageController v-if="numPages !== undefined" :numPages="numPages" :current-page="currentPage" @update:current-page="onChangePage" />
 	</div>
 </template>
 
@@ -12,6 +12,7 @@ import type { RecipeDTO } from 'shared';
 
 const props = defineProps<{
 	recipes: RecipeDTO[] | undefined
+	numPages: number | undefined
 	currentPage: number
 }>();
 
