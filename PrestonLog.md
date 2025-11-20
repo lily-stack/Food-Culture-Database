@@ -8,5 +8,6 @@
 | 11/9/2025 | Worked on Map page | 1 |
 | 11/12/2025 | Worked on Map page, navbar | 3 |
 | 11/17/2025 | Worked on express.js server setup | 1 |
+| 11/19/2025 | Worked on backend endpoints | 2 |
 
-Total 16 Hours
+Total 18 Hours
