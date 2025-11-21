@@ -16,15 +16,15 @@ export type Database = {
     Tables: {
       Country: {
         Row: {
-          country_id: number
+          country_code: string
           country_name: string
         }
         Insert: {
-          country_id?: number
+          country_code: string
           country_name: string
         }
         Update: {
-          country_id?: number
+          country_code?: string
           country_name?: string
         }
         Relationships: []
@@ -181,24 +181,24 @@ export type Database = {
       }
       RecipeCountry: {
         Row: {
-          country_id: number
+          country_code: string
           recipe_id: number
         }
         Insert: {
-          country_id: number
+          country_code: string
           recipe_id?: number
         }
         Update: {
-          country_id?: number
+          country_code?: string
           recipe_id?: number
         }
         Relationships: [
           {
-            foreignKeyName: "RecipeCountry_country_id_fkey"
-            columns: ["country_id"]
+            foreignKeyName: "RecipeCountry_country_code_fkey"
+            columns: ["country_code"]
             isOneToOne: false
             referencedRelation: "Country"
-            referencedColumns: ["country_id"]
+            referencedColumns: ["country_code"]
           },
           {
             foreignKeyName: "RecipeCountry_recipe_id_fkey"

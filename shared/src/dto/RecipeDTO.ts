@@ -1,3 +1,5 @@
+import { CountryCode } from "../types/CountryCode"
+
 export interface RecipeDTO {
 	recipe_id: number
 	user_id: string
@@ -9,4 +11,5 @@ export interface RecipeDTO {
 	recipe_steps: string
 	img_src: string
 	ratings: number
+	countries: CountryCode[]
 }

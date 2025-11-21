@@ -7,7 +7,7 @@
 			<h1>{{ countryName }}</h1>
 		</div>
 		<div class="mt-4">
-			<SkeletonLoader v-if="isLoading" type="text" class="w-1/4" />
+			<SkeletonLoader v-if="isLoadingFirstPage" type="text" class="w-1/4" />
 			<Transition v-else name="fade" appear>
 				<p class="text-gray-700">Found {{ totalRecipes ?? 0 }} dishes:</p>
 			</Transition>
@@ -35,6 +35,7 @@ const emit = defineEmits<{
 }>();
 
 const isLoading = ref<boolean>(true);
+const isLoadingFirstPage = ref<boolean>(true);
 const currentPage = ref<number>(1);
 const totalPages = ref<number | undefined>(undefined);
 const totalRecipes = ref<number | undefined>(undefined)
@@ -49,6 +50,7 @@ function cancel() {
 
 function handleChangePage(page: number) {
 	currentPage.value = page;
+	loadRecipes();
 }
 
 async function loadRecipes() {
@@ -56,8 +58,11 @@ async function loadRecipes() {
 	recipes.value = undefined;
 	totalPages.value = undefined;
 	error.value = undefined;
+	if (currentPage.value === 1) {
+		isLoadingFirstPage.value = true;
+	}
 	try {
-		const response = await fetch(`/api/recipes?country=${props.countryCode.toLowerCase()}&limit=10`);
+		const response = await fetch(`/api/recipes?country=${props.countryCode.toLowerCase()}&page=${currentPage.value}`);
 		if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
 		const res = await response.json() as PaginatedRecipesResponse;
@@ -69,6 +74,7 @@ async function loadRecipes() {
 		error.value = "An error occured. Please try again.";
 	} finally {
 		isLoading.value = false;
+		isLoadingFirstPage.value = false;
 	}
 }
 
