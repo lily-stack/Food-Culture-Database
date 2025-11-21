@@ -78,8 +78,26 @@ async function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response)
 	});
 }
 
-function getRecipeById(req: Request, res: Response) {
 
+/**
+ * Gets a specific recipe by id.
+ * Example usage:
+ * /api/recipes/1
+ * (where 1 is the recipe_id)
+ */
+async function getRecipeById(req: Request, res: Response) {
+	const recipeId = req.params.id;
+	
+	let { data, error } = await supabase
+		.from('Recipe')
+		.select()
+		.eq('recipe_id', +recipeId);
+
+	if (data?.length) {
+		res.status(200).send(data[0]);
+	} else {
+		res.status(404).send();
+	}
 }
 
 export { router };
