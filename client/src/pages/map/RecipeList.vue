@@ -22,7 +22,7 @@
 					/>
 				</template>
 				<template v-else>
-					<span class="text-gray-700 m-auto">No recipes found</span>
+					<span class="text-gray-500 m-auto">No recipes found</span>
 				</template>
 			</template>
 		</TransitionGroup>
