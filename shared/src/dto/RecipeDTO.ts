@@ -3,7 +3,7 @@ export interface RecipeDTO {
 	user_id: string
 	title: string
 	dish_description: string
-	creation_date: number
+	creation_date: string
 	cooking_time: number
 	servings: number
 	recipe_steps: string

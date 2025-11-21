@@ -2,8 +2,13 @@ import express, { Request, Response } from "express";
 import { CountryCode, PaginatedRecipesResponse, RecipeDTO } from "shared";
 import { RecipeService } from "../service/recipe/RecipeService";
 import { FakeRecipeService } from "../service/recipe/FakeRecipeService";
+import { createClient } from "@supabase/supabase-js";
+import { Database } from "../database.types";
 
-const recipeService: RecipeService = new FakeRecipeService();
+const supabase = createClient<Database>(
+	process.env["SUPABASE_URL"]!,
+	process.env["SUPABASE_KEY"]!
+);
 
 const router = express.Router();
 router.get('/', getRecipes);
@@ -26,7 +31,25 @@ async function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response)
 		return;
 	}
 
-	const recipes = await recipeService.getRecipesByCountry(country);
+	const { data, error } = await supabase.from('Recipe').select("*");
+	if (!data || error) {
+		res.status(500).send(error.message);
+		return;
+	}
+
+	const recipes: RecipeDTO[] = data.map(row => ({
+		recipe_id: row.recipe_id,
+		user_id: row.user_id,
+		title: row.title,
+		dish_description: row.dish_description,
+		creation_date: row.creation_date,
+		cooking_time: row.cooking_time,
+		servings: row.servings,
+		recipe_steps: row.recipe_steps,
+		img_src: "",
+		ratings: 0
+	}));
+
 	const body: PaginatedRecipesResponse = {
 		recipes,
 		page: 1,
