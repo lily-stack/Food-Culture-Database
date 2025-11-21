@@ -38,7 +38,9 @@ async function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response)
 		.from('Recipe')
 		.select(`
 			*,
-			...RecipeCountry!inner()
+			...RecipeCountry!inner(
+				country_code
+			)
 		`, { count: "exact" });
 	if (country) {
 		query = query.eq('RecipeCountry.country_code', country);
@@ -62,7 +64,7 @@ async function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response)
 		recipe_steps: row.recipe_steps,
 		img_src: "",
 		ratings: 0,
-		countries: []
+		countries: row.country_code as CountryCode[]
 	}));
 
 	const totalPages = count ? Math.ceil(count / limit) : 0;
