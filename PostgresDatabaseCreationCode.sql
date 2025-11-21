@@ -1,6 +1,11 @@
 -- WARNING: This schema is for context only and is not meant to be run.
 -- Table order and constraints may not be valid for execution.
 
+CREATE TABLE public.Country (
+  country_name character varying NOT NULL,
+  country_code character varying NOT NULL,
+  CONSTRAINT Country_pkey PRIMARY KEY (country_code)
+);
 CREATE TABLE public.Favorite (
   favorite_id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
   user_id uuid NOT NULL,
@@ -35,12 +40,19 @@ CREATE TABLE public.Recipe (
   recipe_id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
   user_id uuid NOT NULL,
   title character varying NOT NULL,
-  dish_description text,
+  dish_description text NOT NULL,
   creation_date timestamp with time zone NOT NULL DEFAULT now(),
-  cooking_time bigint,
-  servings bigint,
-  recipe_steps text,
+  cooking_time bigint NOT NULL,
+  servings bigint NOT NULL,
+  recipe_steps text NOT NULL,
   CONSTRAINT Recipe_pkey PRIMARY KEY (recipe_id)
+);
+CREATE TABLE public.RecipeCountry (
+  recipe_id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
+  country_code character varying NOT NULL,
+  CONSTRAINT RecipeCountry_pkey PRIMARY KEY (recipe_id, country_code),
+  CONSTRAINT RecipeCountry_recipe_id_fkey FOREIGN KEY (recipe_id) REFERENCES public.Recipe(recipe_id),
+  CONSTRAINT RecipeCountry_country_code_fkey FOREIGN KEY (country_code) REFERENCES public.Country(country_code)
 );
 CREATE TABLE public.RecipeIngredient (
   recipe_id bigint NOT NULL UNIQUE,
