@@ -17,6 +17,12 @@ interface RecipesQuery {
 	page?: number
 	limit?: number
 }
+
+/**
+ * Gets recipes, paginated. Currently supports filtering by country code.
+ * Example usage:
+ * /api/recipes?country=kr&page=1
+ */
 async function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response) {
 	const { country, page } = req.query;
 
