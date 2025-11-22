@@ -35,6 +35,7 @@ import RecipeListItem from './RecipeListItem.vue';
 import RecipeListItemSkeletonLoader from './RecipeListItemSkeletonLoader.vue';
 import type { RecipeDTO } from 'shared';
 
+// Will assume loading if recipes is undefined
 const props = defineProps<{
 	recipes: RecipeDTO[] | undefined
 }>();

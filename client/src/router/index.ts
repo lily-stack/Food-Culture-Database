@@ -21,16 +21,16 @@ const router = createRouter({
 			component: MapPage,
 		},
 		{
-			path: '/recipes/recipeid',
+			path: '/recipes/:recipeid',
 			component: RecipePage,
 		},
 		{
-			path: '/createRecipe',
+			path: '/recipes/create',
 			component: CreateRecipe,
 			meta: { requiresAuth: true }
 		},
 		{
-			path: '/editRecipe/recipeid',
+			path: '/recipes/edit/:recipeid',
 			component: EditRecipe,
 			meta: { requiresAuth: true }
 		},

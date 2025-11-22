@@ -179,7 +179,7 @@ async function findIsCreator() {
 
 const goToEdit = () => {
   if (state.recipe) {
-    state.router.push(`/editRecipe/recipeid`)
+    state.router.push(`/recipes/edit/recipeid`)
     //state.router.push(`/editRecipe/${state.recipe.recipe_id}`)
   }
 }
