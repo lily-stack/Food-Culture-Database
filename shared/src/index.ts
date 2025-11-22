@@ -1,8 +1,8 @@
 // DTOs
-export { type RecipeDTO } from "./dto/RecipeDTO";
 
 // Types
 export { type CountryCode } from "./types/CountryCode"
+export { type Recipe } from "./types/Recipe";
 
 // Request
 

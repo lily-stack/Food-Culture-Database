@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { CountryCode, PaginatedRecipesResponse, RecipeDTO } from "shared";
+import { CountryCode, PaginatedRecipesResponse, Recipe } from "shared";
 import { createClient } from "@supabase/supabase-js";
 import { Database } from "../database.types";
 
@@ -54,7 +54,7 @@ async function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response)
 		return;
 	}
 
-	const recipes: RecipeDTO[] = (data ?? []).map(row => ({
+	const recipes: Recipe[] = (data ?? []).map(row => ({
 		recipe_id: row.recipe_id,
 		user_id: row.user_id,
 		title: row.title,

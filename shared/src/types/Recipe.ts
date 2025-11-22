@@ -1,6 +1,6 @@
 import { CountryCode } from "../types/CountryCode"
 
-export interface RecipeDTO {
+export interface Recipe {
 	recipe_id: number
 	user_id: string
 	title: string

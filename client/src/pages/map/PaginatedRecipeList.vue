@@ -8,10 +8,10 @@
 <script setup lang="ts">
 import RecipeList from './RecipeList.vue';
 import PageController from './PageController.vue';
-import type { RecipeDTO } from 'shared';
+import type { Recipe } from 'shared';
 
 const props = defineProps<{
-	recipes: RecipeDTO[] | undefined
+	recipes: Recipe[] | undefined
 	numPages: number | undefined
 	currentPage: number
 }>();

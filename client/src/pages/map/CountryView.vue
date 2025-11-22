@@ -24,7 +24,7 @@
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
 import { computed, ref, watch } from 'vue';
 import PaginatedRecipeList from './PaginatedRecipeList.vue';
-import type { CountryCode, PaginatedRecipesResponse, RecipeDTO } from 'shared';
+import type { CountryCode, PaginatedRecipesResponse, Recipe } from 'shared';
 import { getCountryName } from '@/util/country/country';
 
 const props = defineProps<{
@@ -39,7 +39,7 @@ const isLoadingFirstPage = ref<boolean>(true);
 const currentPage = ref<number>(1);
 const totalPages = ref<number | undefined>(undefined);
 const totalRecipes = ref<number | undefined>(undefined)
-const recipes = ref<RecipeDTO[] | undefined>(undefined);
+const recipes = ref<Recipe[] | undefined>(undefined);
 const error = ref<string | undefined>(undefined);
 
 const countryName = computed(() => getCountryName(props.countryCode));
