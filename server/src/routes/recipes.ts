@@ -20,6 +20,7 @@ interface RecipesQuery {
 
 /**
  * Gets recipes, paginated. Currently supports filtering by country code.
+ * TODO: Support filtering by user.
  * Example usage:
  * /api/recipes?country=kr&page=1
  */
@@ -91,10 +92,11 @@ async function getRecipeById(req: Request, res: Response) {
 	let { data, error } = await supabase
 		.from('Recipe')
 		.select()
-		.eq('recipe_id', +recipeId);
+		.eq('recipe_id', +recipeId)
+		.single();
 
-	if (data?.length) {
-		res.status(200).send(data[0]);
+	if (data) {
+		res.status(200).send(data);
 	} else {
 		res.status(404).send();
 	}
