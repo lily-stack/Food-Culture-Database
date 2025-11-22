@@ -186,7 +186,7 @@ function selectCountry(element: SVGPathElement, d: CountryFeature) {
 	} else {
 		selected = element;
 		d3.select(selected).attr("fill", COUNTRY_HIGHLIGHT_COLOR);
-		emit("select", iso_a2);
+		emit("select", iso_a2.toLowerCase() as CountryCode);
 	}
 
 	const width = mapContainer.value.clientWidth;
