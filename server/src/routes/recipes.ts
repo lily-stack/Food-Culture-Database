@@ -70,13 +70,14 @@ async function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response)
 
 	const totalPages = count ? Math.ceil(count / limit) : 0;
 
-	res.status(200).json({
+	const body: PaginatedRecipesResponse = {
 		recipes,
 		page: pageNum,
 		pageSize: limit,
 		totalItems: count ?? 0,
 		totalPages
-	});
+	}
+	res.status(200).json(body);
 }
 
 
