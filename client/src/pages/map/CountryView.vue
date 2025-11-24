@@ -9,7 +9,7 @@
 		<div class="mt-2 flex justify-between items-end">
 			<SkeletonLoader v-if="isLoadingFirstPage" type="text" class="w-1/4" />
 			<Transition v-else name="fade" appear>
-				<p class="text-gray-700">Found {{ totalRecipes ?? 0 }} dishes:</p>
+				<p class="text-gray-700">Found {{ totalRecipes ?? 0 }} dish{{ totalRecipes === 1 ? '' : 'es' }}:</p>
 			</Transition>
 			<RouterLink :to="`/recipes/create?country=${countryCode}`">
 				<Button variant="secondary">
