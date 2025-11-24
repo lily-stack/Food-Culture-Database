@@ -2,9 +2,11 @@
 	<div class="w-full h-full">
 		<div ref="mapContainer" class="w-full h-full bg-blue-200 cursor-grab active:cursor-grabbing overflow-hidden">
 		</div>
-		<div v-if="isLoading"
-			class="fixed top-1/2 left-1/2 p-4 bg-white rounded-lg shadow-lg text-gray-700 border border-gray-200 transform -translate-x-1/2 -translate-y-1/2">
-			Loading...
+		<div v-if="isLoading" class="fixed inset-0 backdrop-blur-xs">
+			<div
+				class="absolute top-1/2 left-1/2 p-4 bg-white rounded-lg shadow-lg text-gray-700 border border-gray-200 transform -translate-x-1/2 -translate-y-1/2">
+				Loading...
+			</div>
 		</div>
 	</div>
 </template>
