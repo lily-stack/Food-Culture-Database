@@ -6,11 +6,17 @@
 			</div>
 			<h1>{{ countryName }}</h1>
 		</div>
-		<div class="mt-4">
+		<div class="mt-2 flex justify-between items-end">
 			<SkeletonLoader v-if="isLoadingFirstPage" type="text" class="w-1/4" />
 			<Transition v-else name="fade" appear>
 				<p class="text-gray-700">Found {{ totalRecipes ?? 0 }} dishes:</p>
 			</Transition>
+			<RouterLink :to="`/recipes/create?country=${countryCode}`">
+				<Button variant="secondary">
+					<i class="fa-solid fa-plus"></i>
+					Create Recipe
+				</Button>
+			</RouterLink>
 		</div>
 		<PaginatedRecipeList v-if="!error" class="mt-2 grow" :recipes="recipes" :num-pages="totalPages"
 			:current-page="currentPage" @change-page="handleChangePage" />
@@ -22,6 +28,7 @@
 
 <script setup lang="ts">
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
+import Button from '@/components/AppButton.vue';
 import { computed, ref, watch } from 'vue';
 import PaginatedRecipeList from './PaginatedRecipeList.vue';
 import type { CountryCode, PaginatedRecipesResponse, Recipe } from 'shared';
