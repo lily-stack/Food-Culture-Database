@@ -1,8 +1,8 @@
 <template>
-	<div class="border border-gray-200 rounded-lg shadow-md">
-		<div class="py-1 px-3 border-b border-gray-200 bg-gray-100">
-			<p class="text-gray-600 font-semibold">Recipe of the Day</p>
-		</div>
+	<Card>
+		<template #name>
+			Recipe of the Day
+		</template>
 		<template v-if="recipe === null">
 			<RecipeListItemSkeletonLoader />
 		</template>
@@ -13,12 +13,13 @@
 				</RouterLink>
 			</Transition>
 		</template>
-	</div>
+	</Card>
 </template>
 
 <script setup lang="ts">
 import type { Recipe } from 'shared';
 import { onMounted, ref } from 'vue';
+import Card from './Card.vue';
 import RecipeListItemSkeletonLoader from '../map/RecipeListItemSkeletonLoader.vue';
 import RecipeListItemContent from '../map/RecipeListItemContent.vue';
 

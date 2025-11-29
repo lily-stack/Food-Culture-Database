@@ -11,12 +11,14 @@
 			Testing connection to API...
 		</h2>
 	</div>
-	<RecipeOfTheDay class="mt-3" />
+	<RecipeOfTheDay class="mt-3"/>
+	<PopularRecipes class="mt-4"/>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import RecipeOfTheDay from './RecipeOfTheDay.vue';
+import PopularRecipes from './PopularRecipes.vue';
 
 
 const requestReceived = ref<boolean | undefined>(undefined);
