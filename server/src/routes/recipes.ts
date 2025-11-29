@@ -36,7 +36,7 @@ async function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response)
 	}
 
 	let query = supabase
-		.from('Recipe')
+		.from('recipe_model')
 		.select(`
 			*,
 			...RecipeCountry!inner(
@@ -64,9 +64,9 @@ async function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response)
 		servings: row.servings,
 		recipe_steps: row.recipe_steps,
 		img_src: "",
-		ratings: 0,
+		ratings: row.rating,
 		countries: row.country_code as CountryCode[]
-	}));
+	}) as Recipe);
 
 	const totalPages = count ? Math.ceil(count / limit) : 0;
 
@@ -87,17 +87,26 @@ async function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response)
  * /api/recipes/1
  * (where 1 is the recipe_id)
  */
-async function getRecipeById(req: Request, res: Response) {
+async function getRecipeById(req: Request, res: Response<Recipe>) {
 	const recipeId = req.params.id;
-	
-	let { data, error } = await supabase
-		.from('Recipe')
-		.select()
+	if (recipeId == null) {
+		res.status(400).send();
+	}
+
+	const { data, error } = await supabase
+		.from('recipe_model')
+		.select(`*`)
 		.eq('recipe_id', +recipeId)
 		.single();
 
 	if (data) {
-		res.status(200).send(data);
+		const recipe = {
+			...data,
+			img_src: "",
+			ratings: data.rating,
+			countries: data.countries as CountryCode[]
+		} as Recipe
+		res.status(200).send(recipe);
 	} else {
 		res.status(404).send();
 	}

@@ -1,11 +1,6 @@
 -- WARNING: This schema is for context only and is not meant to be run.
 -- Table order and constraints may not be valid for execution.
 
-CREATE TABLE public.Country (
-  country_name character varying NOT NULL,
-  country_code character varying NOT NULL,
-  CONSTRAINT Country_pkey PRIMARY KEY (country_code)
-);
 CREATE TABLE public.Favorite (
   favorite_id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
   user_id uuid NOT NULL,
@@ -28,12 +23,10 @@ CREATE TABLE public.Ingredient (
   CONSTRAINT Ingredient_pkey PRIMARY KEY (ingredient_id)
 );
 CREATE TABLE public.Rating (
-  rating_id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
   recipe_id bigint NOT NULL,
-  user_id uuid,
-  score real,
-  CONSTRAINT Rating_pkey PRIMARY KEY (rating_id),
-  CONSTRAINT Rating_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.User(user_id),
+  user_id uuid NOT NULL,
+  score real NOT NULL,
+  CONSTRAINT Rating_pkey PRIMARY KEY (recipe_id, user_id),
   CONSTRAINT Rating_recipe_id_fkey FOREIGN KEY (recipe_id) REFERENCES public.Recipe(recipe_id)
 );
 CREATE TABLE public.Recipe (
@@ -51,8 +44,7 @@ CREATE TABLE public.RecipeCountry (
   recipe_id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
   country_code character varying NOT NULL,
   CONSTRAINT RecipeCountry_pkey PRIMARY KEY (recipe_id, country_code),
-  CONSTRAINT RecipeCountry_recipe_id_fkey FOREIGN KEY (recipe_id) REFERENCES public.Recipe(recipe_id),
-  CONSTRAINT RecipeCountry_country_code_fkey FOREIGN KEY (country_code) REFERENCES public.Country(country_code)
+  CONSTRAINT RecipeCountry_recipe_id_fkey FOREIGN KEY (recipe_id) REFERENCES public.Recipe(recipe_id)
 );
 CREATE TABLE public.RecipeIngredient (
   recipe_id bigint NOT NULL UNIQUE,

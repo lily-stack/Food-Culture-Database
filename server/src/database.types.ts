@@ -14,21 +14,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      Country: {
-        Row: {
-          country_code: string
-          country_name: string
-        }
-        Insert: {
-          country_code: string
-          country_name: string
-        }
-        Update: {
-          country_code?: string
-          country_name?: string
-        }
-        Relationships: []
-      }
       Favorite: {
         Row: {
           date_hearted: string | null
@@ -54,6 +39,13 @@ export type Database = {
             columns: ["recipe_id"]
             isOneToOne: false
             referencedRelation: "Recipe"
+            referencedColumns: ["recipe_id"]
+          },
+          {
+            foreignKeyName: "Favorite_recipe_id_fkey"
+            columns: ["recipe_id"]
+            isOneToOne: false
+            referencedRelation: "recipe_model"
             referencedColumns: ["recipe_id"]
           },
           {
@@ -112,22 +104,19 @@ export type Database = {
       }
       Rating: {
         Row: {
-          rating_id: number
           recipe_id: number
-          score: number | null
-          user_id: string | null
+          score: number
+          user_id: string
         }
         Insert: {
-          rating_id?: number
           recipe_id: number
-          score?: number | null
-          user_id?: string | null
+          score: number
+          user_id: string
         }
         Update: {
-          rating_id?: number
           recipe_id?: number
-          score?: number | null
-          user_id?: string | null
+          score?: number
+          user_id?: string
         }
         Relationships: [
           {
@@ -135,6 +124,13 @@ export type Database = {
             columns: ["recipe_id"]
             isOneToOne: false
             referencedRelation: "Recipe"
+            referencedColumns: ["recipe_id"]
+          },
+          {
+            foreignKeyName: "Rating_recipe_id_fkey"
+            columns: ["recipe_id"]
+            isOneToOne: false
+            referencedRelation: "recipe_model"
             referencedColumns: ["recipe_id"]
           },
           {
@@ -194,17 +190,17 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "RecipeCountry_country_code_fkey"
-            columns: ["country_code"]
+            foreignKeyName: "RecipeCountry_recipe_id_fkey"
+            columns: ["recipe_id"]
             isOneToOne: false
-            referencedRelation: "Country"
-            referencedColumns: ["country_code"]
+            referencedRelation: "Recipe"
+            referencedColumns: ["recipe_id"]
           },
           {
             foreignKeyName: "RecipeCountry_recipe_id_fkey"
             columns: ["recipe_id"]
             isOneToOne: false
-            referencedRelation: "Recipe"
+            referencedRelation: "recipe_model"
             referencedColumns: ["recipe_id"]
           },
         ]
@@ -240,6 +236,13 @@ export type Database = {
             referencedRelation: "Recipe"
             referencedColumns: ["recipe_id"]
           },
+          {
+            foreignKeyName: "RecipeIngredient_recipe_id_fkey"
+            columns: ["recipe_id"]
+            isOneToOne: true
+            referencedRelation: "recipe_model"
+            referencedColumns: ["recipe_id"]
+          },
         ]
       }
       RecipeTag: {
@@ -261,6 +264,13 @@ export type Database = {
             columns: ["recipe_id"]
             isOneToOne: false
             referencedRelation: "Recipe"
+            referencedColumns: ["recipe_id"]
+          },
+          {
+            foreignKeyName: "RecipeTag_recipe_id_fkey"
+            columns: ["recipe_id"]
+            isOneToOne: false
+            referencedRelation: "recipe_model"
             referencedColumns: ["recipe_id"]
           },
           {
@@ -304,7 +314,21 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      recipe_model: {
+        Row: {
+          cooking_time: number | null
+          countries: string[] | null
+          creation_date: string | null
+          dish_description: string | null
+          rating: number | null
+          recipe_id: number | null
+          recipe_steps: string | null
+          servings: number | null
+          title: string | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never

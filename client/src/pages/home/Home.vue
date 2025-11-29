@@ -27,6 +27,10 @@ onMounted(() => {
 			requestReceived.value = false;
 		}
 	})
+	fetch('/api/recipes/1').then(async response => {
+		const body = await response.json()
+		console.log('test query for recipe with id 1:', body)
+	})
 })
 </script>
 
