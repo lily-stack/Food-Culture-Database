@@ -1,5 +1,5 @@
 <template>
-	<button class="border transition-colors rounded-lg px-2 py-0.5 text-gray-700 cursor-pointer"
+	<button class="border transition-colors rounded-lg px-2 py-0.5 text-gray-700 cursor-pointer shadow-sm"
 		:class="{
 			'': variant === 'primary',
 			'bg-white border-gray-300 hover:bg-gray-100 active:bg-gray-200': variant === 'secondary'
