@@ -32,7 +32,7 @@ import Button from '@/components/AppButton.vue';
 import { computed, ref, watch } from 'vue';
 import PaginatedRecipeList from './PaginatedRecipeList.vue';
 import type { CountryCode, PaginatedRecipesResponse, Recipe } from 'shared';
-import { getCountryName } from '@/util/country/country';
+import { getCountryName } from '@/util/country/countryUtils';
 
 const props = defineProps<{
 	countryCode: CountryCode

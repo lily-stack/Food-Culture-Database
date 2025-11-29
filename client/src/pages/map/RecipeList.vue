@@ -11,14 +11,8 @@
 				<template v-if="recipes && recipes.length">
 					<RecipeListItem
 						v-for="(recipe, index) in recipes"
-						:key="recipe.title"
-						:recipeId="recipe.recipe_id"
-						:title="recipe.title"
-						:description="recipe.dish_description"
-						:imgSrc="recipe.img_src"
-						:ratings="recipe.ratings"
-						:servings="recipe.servings"
-						:cookingTime="recipe.cooking_time"
+						:key="recipe.recipe_id"
+						:recipe="recipe"
 					/>
 				</template>
 				<template v-else>
