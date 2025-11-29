@@ -31,6 +31,12 @@ onMounted(() => {
 			requestReceived.value = false;
 		}
 	})
+	fetch('/api/recipes?page=1&country=kr').then(async response => {
+		if (response.ok) {
+			const data = await response.json();
+			console.log(data)
+		}
+	})
 })
 </script>
 

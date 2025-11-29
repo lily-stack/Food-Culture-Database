@@ -1,7 +1,7 @@
 <template>
 	<Card>
 		<template #name>
-			<span class="italic">Popular Recipes</span>
+			<span>Popular Recipes</span>
 		</template>
 		<Transition name="fade" appear>
 			<div class="p-3 h-[300px]">Hello, world!</div>

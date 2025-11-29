@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import { CountryCode, PaginatedRecipesResponse, Recipe } from "shared";
 import { createClient } from "@supabase/supabase-js";
 import { Database } from "../database.types";
+import seedrandom from "seedrandom";
 
 const supabase = createClient<Database>(
 	process.env["SUPABASE_URL"]!,
@@ -40,12 +41,10 @@ async function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response)
 		.from('recipe_model')
 		.select(`
 			*,
-			...RecipeCountry!inner(
-				country_code
-			)
+			...RecipeCountry!inner()
 		`, { count: "exact" });
 	if (country) {
-		query = query.eq('RecipeCountry.country_code', country);
+		query = query.eq("RecipeCountry.country_code", country);
 	}
 	query = query.range((pageNum - 1) * limit, pageNum * limit - 1);
 
@@ -91,7 +90,9 @@ async function getRecipeById(req: Request, res: Response<Recipe>) {
 		.eq('recipe_id', +recipeId)
 		.single();
 
-	if (data) {
+	if (error || !data) {
+		res.status(404).send();
+	} else {
 		const recipe = {
 			...data,
 			img_src: "",
@@ -99,33 +100,31 @@ async function getRecipeById(req: Request, res: Response<Recipe>) {
 			countries: data.countries as CountryCode[]
 		} as Recipe
 		res.status(200).send(recipe);
-	} else {
-		res.status(404).send();
 	}
 }
 
 
 async function getRecipeOfTheDay(req: Request, res: Response<Recipe>) {
-	const { data: countData, error: countError } = await supabase
+	const { count: numRecipes, error: countError } = await supabase
 		.from('Recipe')
-		.select('count()')
-		.single();
-	if (!countData) {
+		.select('*', { count: 'exact', head: true });
+	if (countError || numRecipes == null) {
 		res.status(500).send();
 		return;
 	}
-	const numRecipes = countData.count;
+
 	const today = new Date();
 	const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
-	const index = seed % numRecipes;
-	
+	const rng = seedrandom(seed.toString());
+	const index = Math.floor(rng() * numRecipes);
+
 	const { data, error } = await supabase
 		.from('recipe_model')
 		.select('*')
-		.range(index, index + 1)
+		.range(index, index)
 		.single();
 
-	if (!data) {
+	if (error || !data) {
 		res.status(500).send();
 	} else {
 		const recipe = {
