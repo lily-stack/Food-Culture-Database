@@ -6,7 +6,7 @@
 				<h4 class="text-gray-900 truncate">{{ recipe.title }}</h4>
 				<div class="text-xs text-gray-600 flex flex-row">
 					<div title="Rating" class="pr-2 mr-2 border-r border-gray-200">
-						<i class="fa-regular fa-star"></i>
+						<i class="fa-regular fa-heart"></i>
 						<span class="ml-0.5">{{ recipe.rating.toLocaleString('en-US') }}</span>
 					</div>
 					<div title="Preparation time" class="mr-2">
