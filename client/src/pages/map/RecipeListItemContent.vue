@@ -1,9 +1,9 @@
 <template>
 	<div class="p-3 flex justify-between gap-2 cursor-pointer hover:bg-gray-50 transition-colors">
-		<div class="flex gap-3">
+		<div class="flex gap-3 grow min-w-0">
 			<img :src="recipe.img_src" class="w-24 h-24 rounded-md object-cover border border-gray-200" />
-			<div class="flex flex-col">
-				<h4 class="text-gray-900">{{ recipe.title }}</h4>
+			<div class="flex flex-col grow min-w-0">
+				<h4 class="text-gray-900 truncate">{{ recipe.title }}</h4>
 				<div class="text-xs text-gray-600 flex flex-row">
 					<div title="Rating" class="pr-2 mr-2 border-r border-gray-200">
 						<i class="fa-regular fa-star"></i>
@@ -18,7 +18,7 @@
 						<span class="ml-0.5">{{ recipe.servings }}</span>
 					</div>
 				</div>
-				<p class="mt-1.5 text-gray-800 line-clamp-2 text-sm">
+				<p class="mt-1.5 text-gray-700 line-clamp-2 text-sm">
 					{{ recipe.dish_description }}
 				</p>
 			</div>
