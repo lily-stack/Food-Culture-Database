@@ -10,6 +10,6 @@ export interface Recipe {
 	servings: number
 	recipe_steps: string
 	img_src: string
-	ratings: number
+	rating: number
 	countries: CountryCode[]
 }

@@ -10,6 +10,7 @@ const supabase = createClient<Database>(
 
 const router = express.Router();
 router.get('/', getRecipes);
+router.get('/daily', getRecipeOfTheDay);
 router.get('/:id', getRecipeById);
 
 interface RecipesQuery {
@@ -55,17 +56,8 @@ async function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response)
 	}
 
 	const recipes: Recipe[] = (data ?? []).map(row => ({
-		recipe_id: row.recipe_id,
-		user_id: row.user_id,
-		title: row.title,
-		dish_description: row.dish_description,
-		creation_date: row.creation_date,
-		cooking_time: row.cooking_time,
-		servings: row.servings,
-		recipe_steps: row.recipe_steps,
-		img_src: "",
-		ratings: row.rating,
-		countries: row.country_code as CountryCode[]
+		...row,
+		img_src: ""
 	}) as Recipe);
 
 	const totalPages = count ? Math.ceil(count / limit) : 0;
@@ -109,6 +101,38 @@ async function getRecipeById(req: Request, res: Response<Recipe>) {
 		res.status(200).send(recipe);
 	} else {
 		res.status(404).send();
+	}
+}
+
+
+async function getRecipeOfTheDay(req: Request, res: Response<Recipe>) {
+	const { data: countData, error: countError } = await supabase
+		.from('Recipe')
+		.select('count()')
+		.single();
+	if (!countData) {
+		res.status(500).send();
+		return;
+	}
+	const numRecipes = countData.count;
+	const today = new Date();
+	const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+	const index = seed % numRecipes;
+	
+	const { data, error } = await supabase
+		.from('recipe_model')
+		.select('*')
+		.range(index, index + 1)
+		.single();
+
+	if (!data) {
+		res.status(500).send();
+	} else {
+		const recipe = {
+			...data,
+			img_src: "",
+		} as Recipe
+		res.status(200).send(recipe)
 	}
 }
 
