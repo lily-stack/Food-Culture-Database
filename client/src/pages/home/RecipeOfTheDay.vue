@@ -19,7 +19,6 @@
 <script setup lang="ts">
 import type { Recipe } from 'shared';
 import { onMounted, ref } from 'vue';
-import { convertMinutesToReadableString } from '@/util/recipe/recipeUtils';
 import RecipeListItemSkeletonLoader from '../map/RecipeListItemSkeletonLoader.vue';
 import RecipeListItemContent from '../map/RecipeListItemContent.vue';
 
