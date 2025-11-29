@@ -10,6 +10,6 @@
 | 11/17/2025 | Worked on express.js server setup | 1 |
 | 11/19/2025 | Worked on backend endpoints | 2 |
 | 11/21/2025 | Worked on backend endpoints for recipe, supabase connection, server debug config | 2 |
-| 11/28/2025 | Worked on SQL view for recipes | 1 |
+| 11/28/2025 | Worked on SQL view for recipes, recipe of the day | 2 |
 
-Total 21 Hours
+Total 22 Hours
