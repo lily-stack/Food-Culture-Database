@@ -1,10 +1,10 @@
 <template>
 	<Card>
 		<template #name>
-			Popular Recipes
+			<span class="italic">Popular Recipes</span>
 		</template>
 		<Transition name="fade" appear>
-			<div class="p-3">Hello, world!</div>
+			<div class="p-3 h-[300px]">Hello, world!</div>
 		</Transition>
 	</Card>
 </template>
