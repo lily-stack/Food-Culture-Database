@@ -11,10 +11,14 @@
 			Testing connection to API...
 		</h2>
 	</div>
+	<RecipeOfTheDay class="mt-3"/>
+	<PopularRecipes class="mt-4"/>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
+import RecipeOfTheDay from './RecipeOfTheDay.vue';
+import PopularRecipes from './PopularRecipes.vue';
 
 
 const requestReceived = ref<boolean | undefined>(undefined);
@@ -25,6 +29,12 @@ onMounted(() => {
 			requestReceived.value = true;
 		} else {
 			requestReceived.value = false;
+		}
+	})
+	fetch('/api/recipes?page=1&country=kr').then(async response => {
+		if (response.ok) {
+			const data = await response.json();
+			console.log(data)
 		}
 	})
 })

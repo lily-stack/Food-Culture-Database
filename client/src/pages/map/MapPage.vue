@@ -33,8 +33,8 @@ import { ref, useTemplateRef } from 'vue';
 import MapOptions from './MapOptions.vue';
 import WorldMap from './WorldMap.vue';
 import CountryView from './CountryView.vue';
-import type { CountryCode } from '@/types/country';
 import type { MapResolution } from './types';
+import type { CountryCode } from 'shared';
 
 const activeCountry = ref<CountryCode | null>(null);
 const mapResolution = ref<MapResolution>("medium");

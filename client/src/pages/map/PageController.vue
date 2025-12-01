@@ -23,7 +23,7 @@
 			</div>
 		</template>
 
-		<div class="item" @click="goToNext" :class="{ 'pointer-events-none opacity-40': currentPage === numPages }">
+		<div class="item" @click="goToNext" :class="{ 'pointer-events-none opacity-40': currentPage === numPages || numPages <= 1 }">
 			<i class="fa-solid fa-angle-right"></i>
 		</div>
 	</div>

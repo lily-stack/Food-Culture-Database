@@ -7,5 +7,9 @@
 | 11/8/2025 | Worked on Map page | 3 |
 | 11/9/2025 | Worked on Map page | 1 |
 | 11/12/2025 | Worked on Map page, navbar | 3 |
+| 11/17/2025 | Worked on express.js server setup | 1 |
+| 11/19/2025 | Worked on backend endpoints | 2 |
+| 11/21/2025 | Worked on backend endpoints for recipe, supabase connection, server debug config | 2 |
+| 11/28/2025 | Worked on SQL view for recipes, recipe of the day | 2 |
 
-Total 15 Hours
+Total 22 Hours

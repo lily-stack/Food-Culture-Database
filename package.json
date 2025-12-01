@@ -1,0 +1,11 @@
+{
+	"name": "recipes-worldwide",
+	"version": "1.0.0",
+	"workspaces": [
+		"client",
+		"server",
+		"shared"
+	],
+	"author": "JWilkerson",
+	"license": "ISC"
+}

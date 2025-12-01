@@ -46,8 +46,18 @@ A recipe sharing platform. Users can create accounts, submit recipes, view and r
 ## Local setup
 ### server
 Setup steps
-- cd into `server`
-- run `npm install`
+- in `server`:
+	- run `npm install`
+	- create `.env` file with SUPABASE_URL and SUPABASE_KEY
+	- any time the supabase schema changes you need to run `npm run db:getTypes` to update the local typescript types
+	- use `npm run dev` to start dev server
+- in `client`:
+	- run `npm install`
+	- use `npm run dev` to start dev server
+- in `shared`:
+	- run `npm run build`
+	- Anytime any code in `shared` is updated, you must run `npm run build` for those changes to be accessible from `client` and `server`
+
 
 ## By 11/18
 ## Kyler = add login capability and continue as guest

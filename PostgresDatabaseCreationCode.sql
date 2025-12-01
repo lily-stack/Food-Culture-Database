@@ -23,24 +23,28 @@ CREATE TABLE public.Ingredient (
   CONSTRAINT Ingredient_pkey PRIMARY KEY (ingredient_id)
 );
 CREATE TABLE public.Rating (
-  rating_id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
   recipe_id bigint NOT NULL,
-  user_id uuid,
-  score real,
-  CONSTRAINT Rating_pkey PRIMARY KEY (rating_id),
-  CONSTRAINT Rating_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.User(user_id),
+  user_id uuid NOT NULL,
+  score real NOT NULL,
+  CONSTRAINT Rating_pkey PRIMARY KEY (recipe_id, user_id),
   CONSTRAINT Rating_recipe_id_fkey FOREIGN KEY (recipe_id) REFERENCES public.Recipe(recipe_id)
 );
 CREATE TABLE public.Recipe (
   recipe_id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
   user_id uuid NOT NULL,
   title character varying NOT NULL,
-  dish_description text,
+  dish_description text NOT NULL,
   creation_date timestamp with time zone NOT NULL DEFAULT now(),
-  cooking_time bigint,
-  servings bigint,
-  recipe_steps text,
+  cooking_time bigint NOT NULL,
+  servings bigint NOT NULL,
+  recipe_steps text NOT NULL,
   CONSTRAINT Recipe_pkey PRIMARY KEY (recipe_id)
+);
+CREATE TABLE public.RecipeCountry (
+  recipe_id bigint GENERATED ALWAYS AS IDENTITY NOT NULL,
+  country_code character varying NOT NULL,
+  CONSTRAINT RecipeCountry_pkey PRIMARY KEY (recipe_id, country_code),
+  CONSTRAINT RecipeCountry_recipe_id_fkey FOREIGN KEY (recipe_id) REFERENCES public.Recipe(recipe_id)
 );
 CREATE TABLE public.RecipeIngredient (
   recipe_id bigint NOT NULL UNIQUE,
