@@ -14,14 +14,14 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import RecipeForm from './RecipeForm.vue'
 import type { Recipe } from './RecipeForm.vue'
 import { useRouter } from 'vue-router'
 
-const tagsInput = ref('')
-const submitted = ref(false)
+const tagsInput = ref<string>('')
+const submitted = ref<boolean>(false)
 const router = useRouter()
 
 const submitRecipe = async (recipe: Recipe) => {

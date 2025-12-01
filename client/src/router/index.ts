@@ -8,6 +8,7 @@ import LoginRegister from '@/pages/authentication/LoginRegister.vue'
 import NotFoundPage from '@/pages/notfound/NotFoundPage.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import SearchPage from '@/pages/search/SearchPage.vue'
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,6 +44,11 @@ const router = createRouter({
 			path: '/profile',
 			component: UserPage,
 			meta: { requiresAuth: true }
+		},
+		{
+			path: '/search',
+			component: SearchPage,
+			meta: { requiresAuth: false }
 		},
 		{ path: '/login', redirect: '/auth' },
 		{ path: '/register', redirect: '/auth' },
