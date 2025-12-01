@@ -11,8 +11,10 @@
 			Testing connection to API...
 		</h2>
 	</div>
-	<RecipeOfTheDay class="mt-3"/>
-	<PopularRecipes class="mt-4"/>
+	<div class="pb-2">
+		<RecipeOfTheDay class="mt-3"/>
+		<PopularRecipes class="mt-4 mb-4"/>
+	</div>
 </template>
 
 <script setup lang="ts">

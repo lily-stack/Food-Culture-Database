@@ -4,12 +4,16 @@
 			<span>Recipe of the Day</span>
 		</template>
 		<template v-if="recipe === null">
-			<RecipeListItemSkeletonLoader />
+			<div class="p-1">
+				<RecipeListItemSkeletonLoader />
+			</div>
 		</template>
 		<template v-else>
 			<Transition name="fade" appear>
 				<RouterLink :to="`/recipes/${recipe?.recipe_id}`">
-					<RecipeListItemContent :recipe="recipe" />
+					<div class="p-1">
+						<RecipeListItemContent class="rounded-md" :recipe="recipe" />
+					</div>
 				</RouterLink>
 			</Transition>
 		</template>
