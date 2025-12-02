@@ -10,11 +10,11 @@
 		</template>
 		<template v-else>
 			<Transition name="fade" appear>
-				<RouterLink :to="`/recipes/${recipe?.recipe_id}`">
-					<div class="p-1">
+				<div class="p-1">
+					<RouterLink :to="`/recipes/${recipe?.recipe_id}`">
 						<RecipeListItemContent class="rounded-md" :recipe="recipe" />
-					</div>
-				</RouterLink>
+					</RouterLink>
+				</div>
 			</Transition>
 		</template>
 	</Card>
