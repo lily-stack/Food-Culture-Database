@@ -1,8 +1,6 @@
 <template>
 	<Card>
-		<template #name>
-			<span>Recipe of the Day</span>
-		</template>
+		<template #name>Recipe of the Day</template>
 		<template v-if="recipe === null">
 			<div class="p-1">
 				<RecipeListItemSkeletonLoader />

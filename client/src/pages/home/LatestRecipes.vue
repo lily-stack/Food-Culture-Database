@@ -1,6 +1,6 @@
 <template>
 	<Card>
-		<template #name>Popular Recipes</template>
+		<template #name>Latest Recipes</template>
 		<div class="p-2 grid grid-cols-1 md:grid-cols-2">
 			<RecipeListItemSkeletonLoader v-for="_ in new Array(6)" />
 		</div>

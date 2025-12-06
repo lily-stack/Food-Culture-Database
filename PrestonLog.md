@@ -11,5 +11,6 @@
 | 11/19/2025 | Worked on backend endpoints | 2 |
 | 11/21/2025 | Worked on backend endpoints for recipe, supabase connection, server debug config | 2 |
 | 11/28/2025 | Worked on SQL view for recipes, recipe of the day | 2 |
+| 12/5/2025 | Worked on Home page | 2 |
 
-Total 22 Hours
+Total 24 Hours
