@@ -54,7 +54,7 @@ const countryNames = computed<string>(() => {
 		.slice(0, limit)
 		.map(code => getCountryName(code))
 		.join(', ');
-	if (ret.length < props.recipe.countries.length) {
+	if (props.recipe.countries.length > limit) {
 		ret += `, and ${props.recipe.countries.length - limit} more`;
 	}
 	return ret;
