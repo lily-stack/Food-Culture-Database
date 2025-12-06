@@ -112,15 +112,20 @@ async function getRecipeById(req: Request, res: Response<Recipe>) {
 
 
 async function getRecipeOfTheDay(req: Request, res: Response<Recipe>) {
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+
 	const { count: numRecipes, error: countError } = await supabase
 		.from('Recipe')
-		.select('*', { count: 'exact', head: true });
+		.select('*', { count: 'exact', head: true })
+		// Only consider recipes from before today in the count (so that creating a new recipe will not change this count)
+		.lt('creation_date', today.toISOString()); 
+
 	if (countError || numRecipes == null) {
 		res.status(500).send();
 		return;
 	}
 
-	const today = new Date();
 	const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
 	const rng = seedrandom(seed.toString());
 	const index = Math.floor(rng() * numRecipes);
