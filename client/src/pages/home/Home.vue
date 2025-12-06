@@ -13,7 +13,7 @@
 			magna. Duis eu facilisis tellus. 
 		</p>
 		<div class="mt-3 flex justify-center gap-4">
-			<AppButton @click="router.push('/map')">
+			<AppButton variant="primary" @click="router.push('/map')">
 				<i class="fa-solid fa-earth-americas"></i>
 				Explore the World
 			</AppButton>
