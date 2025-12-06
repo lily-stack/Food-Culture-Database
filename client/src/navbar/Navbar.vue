@@ -54,11 +54,15 @@ const authStore = useAuthStore();
 const isUserOptionsOpen = ref<boolean>(false);
 
 const displayName = computed(() => {
-	return authStore.fullName || authStore.firstName || 'User';
+	return authStore.fullName || authStore.firstName || 'Login/Register';
 });
 
 function openUserOptions() {
-	isUserOptionsOpen.value = true;
+    if (!authStore.fullName && !authStore.firstName) {
+        router.push('/auth');
+    } else {
+        isUserOptionsOpen.value = true;
+    }
 }
 
 function closeUserOptions() {

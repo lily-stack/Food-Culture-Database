@@ -110,7 +110,7 @@ const authStore = useAuthStore();
 
 const user = computed(() => {
 	return {
-		username: authStore.currentUser?.username ?? '',
+		username: authStore.fullName ?? '',
 		email: authStore.currentUser?.signInDetails?.loginId ?? '',
 		profilePicture: authStore.currentUser?.signInDetails?.picture ?? 'https://via.placeholder.com/150'
 	}
