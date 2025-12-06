@@ -1,7 +1,9 @@
 <template>
 	<div class="">
 		<div class="flex">
-			<h1 class="m-auto text-gray-900 font-[Merriweather] font-normal">Welcome to Recipes Worldwide</h1>
+			<h1 class="m-auto text-gray-900 font-[Merriweather] font-normal">
+				Welcome to Recipes Worldwide
+			</h1>
 		</div>
 		<p class="mt-4 text-gray-600 text-center">
 			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ultrices, nisi nec 
@@ -20,9 +22,11 @@
 				Create a Recipe
 			</AppButton>
 		</div>
-		<RecipeOfTheDay class="mt-7" />
-		<PopularRecipes class="mt-4" />
-		<LatestRecipes class="mt-4 mb-4" />
+		<div class="mt-7 mb-4 flex flex-col gap-5">
+			<RecipeOfTheDay />
+			<PopularRecipes />
+			<LatestRecipes />
+		</div>
 	</div>
 </template>
 

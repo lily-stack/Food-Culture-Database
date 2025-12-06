@@ -15,19 +15,21 @@ router.get('/daily', getRecipeOfTheDay);
 router.get('/:id', getRecipeById);
 
 interface RecipesQuery {
-	country?: string
+	country?: CountryCode
 	page?: number
 	limit?: number
+	sortby?: 'date' | 'popularity'
 }
 
 /**
- * Gets recipes, paginated. Currently supports filtering by country code.
+ * Gets recipes, paginated. Currently supports filtering by country code and sorting by date.
  * TODO: Support filtering by user.
+ * TODO: Support sorting by popularity (rating).
  * Example usage:
- * /api/recipes?country=kr&page=1
+ * /api/recipes?country=kr&page=1&sortby=date
  */
 async function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response) {
-	const { country, page } = req.query;
+	const { country, page, sortby } = req.query;
 
 	const limit = 10;
 	const pageNum = Math.max(1, Number(page) || 1);
@@ -45,6 +47,11 @@ async function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response)
 		`, { count: "exact" });
 	if (country) {
 		query = query.eq("RecipeCountry.country_code", country);
+	}
+	if (sortby === 'date') {
+		query = query.order('creation_date', {
+			ascending: false,
+		});
 	}
 	query = query.range((pageNum - 1) * limit, pageNum * limit - 1);
 
