@@ -1,5 +1,8 @@
 <template>
     <div class="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-50 to-indigo-100 px-4">
+        <div v-if="redirectMessage" class="fixed top-4 left-4 right-4 bg-blue-500 text-white p-4 rounded-lg shadow-lg">
+            {{ redirectMessage }}
+        </div>
         <div class="bg-white shadow-lg rounded-lg border border-gray-200 p-8 max-w-md w-full">
             <div class="flex items-center justify-center mb-6">
                 <div class="w-16 h-16 rounded-full overflow-hidden shrink-0">
@@ -50,10 +53,16 @@
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed transition-colors" />
                 </div>
 
-                <button type="submit" :disabled="loading"
+                <button type="submit" :disabled="loading || authStore.isAuthenticated"
                     class="w-full bg-indigo-600 text-white font-semibold py-3 rounded-lg hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors shadow-md">
                     {{ loading ? 'Logging in...' : 'Login' }}
                 </button>
+                
+                <p 
+                    @click="continueAsGuest"
+                    class="text-center text-sm font-medium text-indigo-600 cursor-pointer hover:underline hover:text-indigo-800 transition-colors">
+                    Continue as Guest
+                </p>
 
                 <p v-if="error" class="text-sm text-red-600 bg-red-50 p-3 rounded-lg text-center">
                     {{ error }}
@@ -111,10 +120,16 @@
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed transition-colors" />
                 </div>
 
-                <button type="submit" :disabled="loading"
+                <button type="submit" :disabled="loading || authStore.isAuthenticated"
                     class="w-full bg-indigo-600 text-white font-semibold py-3 rounded-lg hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors shadow-md">
                     {{ loading ? 'Creating Account...' : 'Sign Up' }}
                 </button>
+
+                <p 
+                    @click="continueAsGuest"
+                    class="text-center text-sm font-medium text-indigo-600 cursor-pointer hover:underline hover:text-indigo-800 transition-colors">
+                    Continue as Guest
+                </p>
 
                 <p v-if="error" class="text-sm text-red-600 bg-red-50 p-3 rounded-lg text-center">
                     {{ error }}
@@ -166,9 +181,10 @@
 </template>
 
 <script setup lang="ts">
-    import { ref } from 'vue';
+    import { ref, onMounted } from 'vue';
     import { useAuthStore } from '@/stores/auth';
     import { useRouter } from 'vue-router';
+    import { previousRoute } from '@/router';
 
     const router = useRouter();
     const authStore = useAuthStore();
@@ -189,6 +205,16 @@
     const successMessage = ref<string>('');
     const loading = ref<boolean>(false);
     const showConfirmation = ref<boolean>(false);
+
+    const redirectMessage = ref<string>('');
+    onMounted(() => {
+        if (authStore.isAuthenticated) {
+            redirectMessage.value = 'You are already logged in. Redirecting...';
+            setTimeout(() => {
+                router.push('/');
+            }, 2000);
+        }
+    });
 
     const handleLogin = async (): Promise<void> => {
         error.value = '';
@@ -304,5 +330,13 @@
         error.value = '';
         successMessage.value = '';
         confirmationCode.value = '';
+    };
+
+    const continueAsGuest = (): void => {
+        if (previousRoute && previousRoute !== '/auth') {
+            router.push(previousRoute);
+        } else {
+            router.push('/');
+        }
     };
 </script>
