@@ -135,6 +135,11 @@ async function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response)
 		query = query.order('creation_date', {
 			ascending: false,
 		});
+	} else if (sortby === 'popularity') {
+		query = query.order('rating', {
+			ascending: false,
+			nullsFirst: false
+		});
 	}
 	query = query.range((pageNum - 1) * limit, pageNum * limit - 1);
 
