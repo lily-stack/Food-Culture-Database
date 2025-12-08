@@ -150,7 +150,7 @@ async function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response)
 
 	const recipes: Recipe[] = (data ?? []).map(row => ({
 		...row,
-		image_src: ""
+		img_src: ""
 	}) as Recipe);
 
 	const totalPages = count ? Math.ceil(count / limit) : 0;
@@ -256,7 +256,7 @@ async function getRecipeOfTheDay(req: Request, res: Response<Recipe>) {
 	} else {
 		const recipe = {
 			...data,
-			image_src: "https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_4:3/k%2FPhoto%2FRecipes%2F2024-03-bimbimbap%2Fbibimbap-074",
+			img_src: "https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_4:3/k%2FPhoto%2FRecipes%2F2024-03-bimbimbap%2Fbibimbap-074",
 		} as Recipe
 		res.status(200).send(recipe)
 	}

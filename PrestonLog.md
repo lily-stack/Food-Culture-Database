@@ -13,5 +13,6 @@
 | 11/28/2025 | Worked on SQL view for recipes, recipe of the day | 2 |
 | 12/5/2025 | Worked on Home page | 2 |
 | 12/6/2025 | Worked on Home page and associated server endpoints | 2 |
+| 12/7/2025 | Small bugfixes | 1 |
 
-Total 28 Hours
+Total 29 Hours
