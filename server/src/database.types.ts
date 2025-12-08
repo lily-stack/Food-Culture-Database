@@ -17,18 +17,21 @@ export type Database = {
       Favorite: {
         Row: {
           date_hearted: string | null
+          embedding: string | null
           favorite_id: number
           recipe_id: number | null
           user_id: string
         }
         Insert: {
           date_hearted?: string | null
+          embedding?: string | null
           favorite_id?: number
           recipe_id?: number | null
           user_id: string
         }
         Update: {
           date_hearted?: string | null
+          embedding?: string | null
           favorite_id?: number
           recipe_id?: number | null
           user_id?: string
@@ -59,14 +62,17 @@ export type Database = {
       }
       Follower: {
         Row: {
+          embedding: string | null
           followee_id: string
           user_id: string
         }
         Insert: {
+          embedding?: string | null
           followee_id: string
           user_id: string
         }
         Update: {
+          embedding?: string | null
           followee_id?: string
           user_id?: string
         }
@@ -89,14 +95,17 @@ export type Database = {
       }
       Ingredient: {
         Row: {
+          embedding: string | null
           ingredient_id: number
           ingredient_name: string
         }
         Insert: {
+          embedding?: string | null
           ingredient_id?: number
           ingredient_name: string
         }
         Update: {
+          embedding?: string | null
           ingredient_id?: number
           ingredient_name?: string
         }
@@ -104,16 +113,19 @@ export type Database = {
       }
       Rating: {
         Row: {
+          embedding: string | null
           recipe_id: number
           score: number
           user_id: string
         }
         Insert: {
+          embedding?: string | null
           recipe_id: number
           score: number
           user_id: string
         }
         Update: {
+          embedding?: string | null
           recipe_id?: number
           score?: number
           user_id?: string
@@ -133,13 +145,6 @@ export type Database = {
             referencedRelation: "recipe_model"
             referencedColumns: ["recipe_id"]
           },
-          {
-            foreignKeyName: "Rating_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "User"
-            referencedColumns: ["user_id"]
-          },
         ]
       }
       Recipe: {
@@ -147,6 +152,7 @@ export type Database = {
           cooking_time: number
           creation_date: string
           dish_description: string
+          embedding: string | null
           recipe_id: number
           recipe_steps: string
           servings: number
@@ -157,6 +163,7 @@ export type Database = {
           cooking_time: number
           creation_date?: string
           dish_description: string
+          embedding?: string | null
           recipe_id?: number
           recipe_steps: string
           servings: number
@@ -167,6 +174,7 @@ export type Database = {
           cooking_time?: number
           creation_date?: string
           dish_description?: string
+          embedding?: string | null
           recipe_id?: number
           recipe_steps?: string
           servings?: number
@@ -178,14 +186,17 @@ export type Database = {
       RecipeCountry: {
         Row: {
           country_code: string
+          embedding: string | null
           recipe_id: number
         }
         Insert: {
           country_code: string
+          embedding?: string | null
           recipe_id?: number
         }
         Update: {
           country_code?: string
+          embedding?: string | null
           recipe_id?: number
         }
         Relationships: [
@@ -208,16 +219,19 @@ export type Database = {
       RecipeIngredient: {
         Row: {
           amount_quantity: number | null
+          embedding: string | null
           ingredient_id: number
           recipe_id: number
         }
         Insert: {
           amount_quantity?: number | null
+          embedding?: string | null
           ingredient_id: number
           recipe_id: number
         }
         Update: {
           amount_quantity?: number | null
+          embedding?: string | null
           ingredient_id?: number
           recipe_id?: number
         }
@@ -225,21 +239,21 @@ export type Database = {
           {
             foreignKeyName: "RecipeIngredient_ingredient_id_fkey"
             columns: ["ingredient_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "Ingredient"
             referencedColumns: ["ingredient_id"]
           },
           {
             foreignKeyName: "RecipeIngredient_recipe_id_fkey"
             columns: ["recipe_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "Recipe"
             referencedColumns: ["recipe_id"]
           },
           {
             foreignKeyName: "RecipeIngredient_recipe_id_fkey"
             columns: ["recipe_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "recipe_model"
             referencedColumns: ["recipe_id"]
           },
@@ -247,14 +261,17 @@ export type Database = {
       }
       RecipeTag: {
         Row: {
+          embedding: string | null
           recipe_id: number
           tag_id: number
         }
         Insert: {
+          embedding?: string | null
           recipe_id: number
           tag_id: number
         }
         Update: {
+          embedding?: string | null
           recipe_id?: number
           tag_id?: number
         }
@@ -284,14 +301,17 @@ export type Database = {
       }
       Tag: {
         Row: {
+          embedding: string | null
           tag: string
           tag_id: number
         }
         Insert: {
+          embedding?: string | null
           tag: string
           tag_id?: number
         }
         Update: {
+          embedding?: string | null
           tag?: string
           tag_id?: number
         }
@@ -299,14 +319,17 @@ export type Database = {
       }
       User: {
         Row: {
+          embedding: string | null
           user_id: string
           user_name: string
         }
         Insert: {
+          embedding?: string | null
           user_id: string
           user_name: string
         }
         Update: {
+          embedding?: string | null
           user_id?: string
           user_name?: string
         }
