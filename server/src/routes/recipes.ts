@@ -255,8 +255,7 @@ async function getRecipeOfTheDay(req: Request, res: Response<Recipe>) {
 		res.status(500).send();
 	} else {
 		const recipe = {
-			...data,
-			img_src: "",
+			...data
 		} as Recipe
 		res.status(200).send(recipe)
 	}

@@ -346,6 +346,8 @@ export type Database = {
           countries: string[] | null
           creation_date: string | null
           dish_description: string | null
+          embedding: string | null
+          image_src: string | null
           rating: number | null
           recipe_id: number | null
           recipe_steps: string | null
