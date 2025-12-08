@@ -354,6 +354,7 @@ export type Database = {
           servings: number | null
           title: string | null
           user_id: string | null
+          image_src: string | null
         }
         Relationships: []
       }

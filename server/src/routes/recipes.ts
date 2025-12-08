@@ -149,8 +149,7 @@ async function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response)
 	}
 
 	const recipes: Recipe[] = (data ?? []).map(row => ({
-		...row,
-		img_src: ""
+		...row
 	}) as Recipe);
 
 	const totalPages = count ? Math.ceil(count / limit) : 0;
