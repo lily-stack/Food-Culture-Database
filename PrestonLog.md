@@ -14,5 +14,6 @@
 | 12/5/2025 | Worked on Home page | 2 |
 | 12/6/2025 | Worked on Home page and associated server endpoints | 2 |
 | 12/7/2025 | Small bugfixes | 1 |
+| 12/8/2025 | Bugfixes and polish | 2 |
 
-Total 29 Hours
+Total 31 Hours
