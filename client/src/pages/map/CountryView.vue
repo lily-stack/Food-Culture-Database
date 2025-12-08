@@ -12,10 +12,10 @@
 				<p class="text-gray-700">Found {{ totalRecipes ?? 0 }} dish{{ totalRecipes === 1 ? '' : 'es' }}:</p>
 			</Transition>
 			<RouterLink :to="`/recipes/create?country=${countryCode}`">
-				<Button variant="secondary">
+				<AppButton variant="secondary">
 					<i class="fa-solid fa-plus"></i>
 					Create Recipe
-				</Button>
+				</AppButton>
 			</RouterLink>
 		</div>
 		<PaginatedRecipeList v-if="!error" class="mt-2 grow" :recipes="recipes" :num-pages="totalPages"
@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 import SkeletonLoader from '@/components/SkeletonLoader.vue';
-import Button from '@/components/AppButton.vue';
+import AppButton from '@/components/AppButton.vue';
 import { computed, ref, watch } from 'vue';
 import PaginatedRecipeList from './PaginatedRecipeList.vue';
 import type { CountryCode, PaginatedRecipesResponse, Recipe } from 'shared';

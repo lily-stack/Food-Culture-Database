@@ -98,19 +98,21 @@ router.get('/daily', getRecipeOfTheDay);
 router.get('/:id', getRecipeById);
 
 interface RecipesQuery {
-	country?: string
+	country?: CountryCode
 	page?: number
 	limit?: number
+	sortby?: 'date' | 'popularity'
 }
 
 /**
- * Gets recipes, paginated. Currently supports filtering by country code.
+ * Gets recipes, paginated. Currently supports filtering by country code and sorting by date.
  * TODO: Support filtering by user.
+ * TODO: Support sorting by popularity (rating).
  * Example usage:
- * /api/recipes?country=kr&page=1
+ * /api/recipes?country=kr&page=1&sortby=date
  */
 async function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response) {
-	const { country, page } = req.query;
+	const { country, page, sortby } = req.query;
 
 	const limit = 10;
 	const pageNum = Math.max(1, Number(page) || 1);
@@ -128,6 +130,11 @@ async function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response)
 		`, { count: "exact" });
 	if (country) {
 		query = query.eq("RecipeCountry.country_code", country);
+	}
+	if (sortby === 'date') {
+		query = query.order('creation_date', {
+			ascending: false,
+		});
 	}
 	query = query.range((pageNum - 1) * limit, pageNum * limit - 1);
 
@@ -188,15 +195,20 @@ async function getRecipeById(req: Request, res: Response<Recipe>) {
 
 
 async function getRecipeOfTheDay(req: Request, res: Response<Recipe>) {
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+
 	const { count: numRecipes, error: countError } = await supabase
 		.from('Recipe')
-		.select('*', { count: 'exact', head: true });
+		.select('*', { count: 'exact', head: true })
+		// Only consider recipes from before today in the count (so that creating a new recipe will not change this count)
+		.lt('creation_date', today.toISOString()); 
+
 	if (countError || numRecipes == null) {
 		res.status(500).send();
 		return;
 	}
 
-	const today = new Date();
 	const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
 	const rng = seedrandom(seed.toString());
 	const index = Math.floor(rng() * numRecipes);
@@ -212,7 +224,7 @@ async function getRecipeOfTheDay(req: Request, res: Response<Recipe>) {
 	} else {
 		const recipe = {
 			...data,
-			img_src: "",
+			img_src: "https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_4:3/k%2FPhoto%2FRecipes%2F2024-03-bimbimbap%2Fbibimbap-074",
 		} as Recipe
 		res.status(200).send(recipe)
 	}

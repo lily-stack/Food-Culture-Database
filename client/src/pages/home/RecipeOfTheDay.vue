@@ -1,16 +1,18 @@
 <template>
 	<Card>
-		<template #name>
-			<span>Recipe of the Day</span>
-		</template>
+		<template #name>Recipe of the Day</template>
 		<template v-if="recipe === null">
-			<RecipeListItemSkeletonLoader />
+			<div class="p-1">
+				<RecipeListItemSkeletonLoader />
+			</div>
 		</template>
 		<template v-else>
 			<Transition name="fade" appear>
-				<RouterLink :to="`/recipes/${recipe?.recipe_id}`">
-					<RecipeListItemContent :recipe="recipe" />
-				</RouterLink>
+				<div class="p-1">
+					<RouterLink :to="`/recipes/${recipe?.recipe_id}`">
+						<RecipeListItemContent class="rounded-md" :recipe="recipe" />
+					</RouterLink>
+				</div>
 			</Transition>
 		</template>
 	</Card>

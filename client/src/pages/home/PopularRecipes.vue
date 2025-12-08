@@ -1,15 +1,14 @@
 <template>
 	<Card>
-		<template #name>
-			<span>Popular Recipes</span>
-		</template>
-		<Transition name="fade" appear>
-			<div class="p-3 h-[300px]">Hello, world!</div>
-		</Transition>
+		<template #name>Popular Recipes</template>
+		<div class="p-2 grid grid-cols-1 md:grid-cols-2">
+			<RecipeListItemSkeletonLoader v-for="_ in new Array(6)" />
+		</div>
 	</Card>
 </template>
 
 <script setup lang="ts">
+import RecipeListItemSkeletonLoader from '../map/RecipeListItemSkeletonLoader.vue';
 import Card from './Card.vue';
 
 </script>

@@ -1,10 +1,9 @@
 <template>
 	<button class="border transition-colors rounded-lg px-2 py-0.5 text-gray-700 cursor-pointer shadow-sm"
 		:class="{
-			'': variant === 'primary',
+			'bg-blue-500 text-white border-gray-400 hover:bg-blue-400 active:bg-blue-300': variant === 'primary',
 			'bg-white border-gray-300 hover:bg-gray-100 active:bg-gray-200': variant === 'secondary'
 		}"
-		
 		@click="emit('click')"
 	>
 		<slot></slot>
@@ -13,7 +12,6 @@
 
 <script setup lang="ts">
 
-//TODO: figure out good primary colors
 const props = withDefaults(defineProps<{
 	variant?: "primary" | "secondary"
 }>(), {

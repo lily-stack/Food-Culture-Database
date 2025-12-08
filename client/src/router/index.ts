@@ -56,31 +56,11 @@ const router = createRouter({
 	],
 })
 
-router.beforeEach(async (to, from, next) => {
-	const authStore = useAuthStore()
+let previousRoute: string | null = null
 
-	const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
-
-	if (!requiresAuth) {
-		next()
-		return
-	}
-
-	if (authStore.isCheckingAuth) {
-		await new Promise<void>((resolve) => {
-			const interval = setInterval(() => {
-				if (!authStore.isCheckingAuth) {
-					clearInterval(interval)
-					resolve()
-				}
-			}, 50)
-		})
-	}
-
-	if (authStore.isAuthenticated) {
-		next()
-	} else {
-		next('/auth')
+router.beforeEach((to, from) => {
+	if(from.path !== '/auth') {
+		previousRoute = from.path
 	}
 })
 
@@ -112,4 +92,33 @@ router.beforeEach(async (to, from, next) => {
 	}
 })
 
+router.beforeEach(async (to, from, next) => {
+	const authStore = useAuthStore()
+
+	const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+
+	if (!requiresAuth) {
+		next()
+		return
+	}
+
+	if (authStore.isCheckingAuth) {
+		await new Promise<void>((resolve) => {
+			const interval = setInterval(() => {
+				if (!authStore.isCheckingAuth) {
+					clearInterval(interval)
+					resolve()
+				}
+			}, 50)
+		})
+	}
+
+	if (authStore.isAuthenticated) {
+		next()
+	} else {
+		next('/auth')
+	}
+})
+
+export { previousRoute }
 export default router
