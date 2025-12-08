@@ -75,8 +75,11 @@
         </div>
 
         <div class="pt-4">
-          <button type="submit" class="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-2 rounded transition-colors">
+          <button v-if="initialRecipe == null" type="submit" class="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-2 rounded transition-colors">
             Create Recipe
+          </button>
+          <button v-else type="submit" class="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-2 rounded transition-colors">
+            Update Recipe
           </button>
         </div>
 

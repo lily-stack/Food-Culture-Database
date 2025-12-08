@@ -1,11 +1,16 @@
 <template>
   <div>
     <h1>Edit Recipe</h1>
-    <RecipeForm
-      :initialRecipe="existingRecipe"
-      submitButtonText="Update Recipe"
-      @submit="updateRecipe"
-    />
+
+    <div v-if="loading">Loading recipe...</div>
+    <div v-else-if="error">{{ error }}</div>
+    <div v-else>
+      <RecipeForm
+        :initialRecipe="existingRecipe"
+        submitButtonText="Update Recipe"
+        @submit="updateRecipe"
+      />
+    </div>
   </div>
 </template>
 
@@ -13,18 +18,87 @@
 import RecipeForm from './RecipeForm.vue'
 import type { Recipe } from './RecipeForm.vue'
 import { ref, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
-// Load recipe data, e.g., from API
-const existingRecipe = ref(null)
+interface RouteParams {
+  recipeid: string
+}
+
+const route = useRoute() as unknown as { params: RouteParams }
+const router = useRouter()
+const authStore = useAuthStore()
+
+const existingRecipe = ref<Recipe | null>(null)
+const loading = ref(true)
+const error = ref('')
+const recipeId = route.params.recipeid
 
 onMounted(async () => {
-  const id = 123 // get recipe ID from route
-  const response = await fetch(`/api/recipes/${id}`)
-  existingRecipe.value = await response.json()
+  if (!recipeId) {
+    error.value = 'No recipe ID provided'
+    loading.value = false
+    return
+  }
+
+  try {
+    const res = await fetch(`/api/recipes/${recipeId}`)
+    if (!res.ok) throw new Error(`Failed to load recipe: ${res.statusText}`)
+    existingRecipe.value = await res.json()
+  } catch (err: any) {
+    console.error(err)
+    error.value = err.message || 'Error fetching recipe'
+  } finally {
+    loading.value = false
+  }
 })
 
-const updateRecipe = (recipe: Recipe) => {
-  console.log('Update Recipe:', recipe)
-  // Call API to update
+const updateRecipe = async (recipe: Recipe) => {
+  if (!recipeId) return
+
+  try {
+    const userId = authStore.userAttributes?.sub
+    if (!userId) throw new Error("User not logged in")
+
+    const ingredientsPayload = recipe.ingredients.map(i => ({
+      ingredient_name: i.ingredient_name || "",
+      amount_quantity: i.amount_quantity ?? null,
+      unit: i.unit || "unit",
+    }))
+
+    const payload = {
+      user_id: userId,
+      title: recipe.title || "",
+      dish_description: recipe.dish_description || "",
+      cooking_time: recipe.cooking_time ?? 0,
+      servings: recipe.servings ?? 1,
+      recipe_steps: recipe.recipe_steps_text || "",
+      countries: recipe.country ? [recipe.country] : [],
+      tags: recipe.tags || [],
+      rating: 0,
+      ingredients: ingredientsPayload,
+    }
+
+    const token = await authStore.getAccessToken()
+    const res = await fetch(`/api/recipes/${recipeId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to update recipe: ${errorText}`)
+    }
+
+    const updated = await res.json()
+    router.push(`/recipes/${recipeId}`)
+  } catch (err: any) {
+    console.error("Update failed:", err)
+    alert(err.message || "Failed to update recipe")
+  }
 }
 </script>

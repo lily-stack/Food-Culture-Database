@@ -431,6 +431,52 @@ router.post(
   }
 );
 
+router.put('/:id', requireAuth, async (req: Request, res: Response) => {
+  const recipeId = Number(req.params.id);
+  if (isNaN(recipeId)) return res.status(400).send("Invalid recipe ID");
+
+  try {
+    const { data: existingRecipe, error: fetchError } = await supabase
+      .from('Recipe')
+      .select('*')
+      .eq('recipe_id', recipeId)
+      .single();
+
+    if (fetchError || !existingRecipe) {
+      return res.status(404).send("Recipe not found");
+    }
+
+    if (existingRecipe.user_id !== req.user!.sub) {
+      return res.status(403).send("Forbidden: cannot edit another user's recipe");
+    }
+
+    const updateData = {
+      title: req.body.title,
+      dish_description: req.body.dish_description ?? "",
+      cooking_time: req.body.cooking_time ?? 0,
+      servings: req.body.servings ?? 1,
+      recipe_steps: req.body.recipe_steps ?? "",
+    };
+
+    const { data: updatedRecipe, error: updateError } = await supabase
+      .from('Recipe')
+      .update(updateData)
+      .eq('recipe_id', recipeId)
+      .select()
+      .single();
+
+    if (updateError || !updatedRecipe) {
+      return res.status(500).send(updateError?.message || "Failed to update recipe");
+    }
+
+    res.json(updatedRecipe);
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).send("Internal server error");
+  }
+});
+
+
 export { router };
 
 

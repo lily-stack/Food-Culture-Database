@@ -33,6 +33,7 @@ const router = createRouter({
 		},
 		{
 			path: '/recipes/edit/:recipeid',
+			name: 'EditRecipe',
 			component: EditRecipe,
 			meta: { requiresAuth: true }
 		},

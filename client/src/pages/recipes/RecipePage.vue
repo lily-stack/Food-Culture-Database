@@ -111,6 +111,12 @@ interface Recipe {
   countries: string[]
 }
 
+interface RouteParams {
+  recipeid: string
+}
+
+const route = useRoute() as unknown as { params: RouteParams }
+
 const state = reactive({
   route: useRoute(),
   loading: true,
@@ -120,50 +126,6 @@ const state = reactive({
   router: useRouter()
 })
 
-// const recipe = ref<Recipe | null>(null)
-// const loading = ref(true)
-// const isFavorited = ref(false)//TODO: need api route
-// const isCreator = ref(false)
-
-// TODO: Replace with real API later ---
-//const response = await axios.get(`/api/recipes/${route.params.recipeid}`)
-//recipe.value = response.data
-// const fetchRecipe = async () => {
-//   state.loading = true
-
-//   // TODO: Replace this with real API call to /api/recipes/:recipeid
-//   //how to save images?
-//   const mockRecipe: Recipe = {
-//     image_src: "https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_4:3/k%2FPhoto%2FRecipes%2F2024-03-bimbimbap%2Fbibimbap-074",
-//     recipe_id: 1,
-//     title: 'Spaghetti Bolognese',
-//     dish_description: 'A classic Italian pasta dish with rich meat sauce.',
-//     cooking_time: 45,
-//     servings: 4,
-//     recipe_steps: [
-//       'Cook spaghetti according to package instructions.',
-//       'Sauté onions and garlic in olive oil.',
-//       'Add ground beef and cook until browned.',
-//       'Add tomato sauce and simmer for 20 minutes.',
-//       'Serve sauce over spaghetti and sprinkle with Parmesan.'
-//     ],
-//     ingredients: [
-//       { ingredient_id: 1, ingredient_name: 'Spaghetti', amount_quantity: 200 },
-//       { ingredient_id: 2, ingredient_name: 'Ground beef', amount_quantity: 300 },
-//       { ingredient_id: 3, ingredient_name: 'Tomato sauce', amount_quantity: 400 },
-//       { ingredient_id: 4, ingredient_name: 'Onion', amount_quantity: 1 },
-//       { ingredient_id: 5, ingredient_name: 'Garlic', amount_quantity: 2 },
-//     ],
-//     creator_name: "Lily Hill",
-//     tags: ["Italy", "Pasta"],
-//     rating: 3.8,
-//     countries: ["Italy", "France"]
-//   }
-
-//   state.recipe = mockRecipe
-//   state.loading = false
-// }
-
 const fetchRecipe = async () => {
   state.loading = true
   try {
@@ -171,6 +133,7 @@ const fetchRecipe = async () => {
     if (!recipeId) {
       state.recipe = null;
       state.loading = false;
+      console.warn("No recipe ID in route")
       return;
     }
     const { data } = await axios.get(`/api/recipes/${recipeId}`)
@@ -207,10 +170,12 @@ async function findIsCreator() {
 }
 
 const goToEdit = () => {
-  if (state.recipe) {
-    state.router.push(`/recipes/edit/recipeid`)
-    //state.router.push(`/editRecipe/${state.recipe.recipe_id}`)
+  const recipeId = state.recipe?.recipe_id
+  if (!recipeId) {
+    console.error("Cannot go to edit: recipe ID is missing")
+    return
   }
+  state.router.push(`/recipes/edit/${recipeId}`)
 }
 
 
