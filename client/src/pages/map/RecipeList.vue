@@ -31,7 +31,7 @@ import type { Recipe } from 'shared';
 
 // Will assume loading if recipes is undefined
 const props = defineProps<{
-	recipes: Recipe[] | undefined
+  recipes?: Recipe[];
 }>();
 
 const isLoading = computed(() => props.recipes === undefined);

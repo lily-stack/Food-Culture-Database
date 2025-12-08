@@ -19,31 +19,65 @@ import { ref } from 'vue'
 import RecipeForm from './RecipeForm.vue'
 import type { Recipe } from './RecipeForm.vue'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
 const tagsInput = ref<string>('')
 const submitted = ref<boolean>(false)
 const router = useRouter()
 
-const submitRecipe = async (recipe: Recipe) => {
-  router.push('/recipes/recipeid')
-  // try {
-  //   console.log('Submitting Recipe:', recipe)
+const authStore = useAuthStore();
 
-  //   // Example API call
-  //   const response = await fetch('/api/recipes', {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify(recipe)
-  //   })
-
-  //   if (!response.ok) throw new Error('Failed to create recipe')
-
-  //   const newRecipe = await response.json() //make sure it has the new recipe's ID
-
-  //   router.push({ name: 'RecipeDetails', params: { id: newRecipe.id } })
-
-  // } catch (error) {
-  //   console.error('Error creating recipe:', error)
-  // }
+interface RecipeIngredientPayload {
+  ingredient_name: string;
+  amount_quantity: number | null;
+  unit: string;
 }
+
+const submitRecipe = async (recipe: Recipe) => {
+  try {
+    const ingredientsPayload: RecipeIngredientPayload[] = recipe.ingredients.map(i => ({
+      ingredient_name: i.ingredient_name || "",
+      amount_quantity: i.amount_quantity ?? null,
+      unit: i.unit || "unit",
+    }));
+
+    const userId = authStore.userAttributes?.sub;
+    if (!userId) throw new Error("User not logged in");
+
+    const payload = {
+      user_id: userId, // replace with logged-in user ID
+      title: recipe.title || "",
+      dish_description: recipe.dish_description || "",
+      cooking_time: recipe.cooking_time ?? 0,
+      servings: recipe.servings ?? 1,
+      recipe_steps: recipe.recipe_steps_text || "",
+      countries: recipe.country ? [recipe.country] : [],
+      tags: recipe.tags || [],
+      rating: 0,
+      creation_date: new Date().toISOString(),
+      ingredients: ingredientsPayload,
+    };
+
+    const token = await authStore.getAccessToken();
+
+    const response = await fetch("/api/recipes", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to create recipe: ${errorText}`);
+    }
+
+    const newRecipe = await response.json();
+    // Redirect to the new recipe page
+    router.push(`/recipes/${newRecipe.recipe_id}`);
+  } catch (error) {
+    console.error("Error creating recipe:", error);
+  }
+};
+
+
 </script>

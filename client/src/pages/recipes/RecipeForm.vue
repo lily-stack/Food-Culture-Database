@@ -17,6 +17,20 @@
           <input v-model="recipe.image_src" type="text" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
         </div>
 
+        <div>
+          <label class="block text-gray-700 font-medium mb-1">Country of Origin</label>
+          <select
+            v-model="recipe.country"
+            class="border rounded p-2 w-full"
+            required
+          >
+            <option value="" disabled>Select country</option>
+            <option v-for="c in COUNTRIES" :key="c.code" :value="c.code">
+              {{ c.name }}
+            </option>
+          </select>
+        </div>
+
         <div class="flex gap-4">
           <div>
             <label class="block font-semibold text-gray-700 mb-1">Cooking Time (min)</label>
@@ -47,7 +61,7 @@
               <option value="pt">pt</option>
               <option value="qt">qt</option>
               <option value="gal">gal</option>
-              <option value="gal">count</option>
+              <option value="count">count</option>
             </select>
             <input v-model="ingredient.ingredient_name" type="text" placeholder="Ingredient name" class="flex-1 border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400" />
             <button type="button" @click="removeIngredient(index)" class="cursor-pointer text-red-500 font-bold px-2">✕</button>
@@ -70,7 +84,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, toRefs, watch } from 'vue'
+import { ref, reactive, toRefs, watch } from 'vue';
+import { COUNTRIES } from "@/data/countries";
 
 interface Ingredient {
   ingredient_name: string
@@ -82,6 +97,7 @@ export interface Recipe {
   title: string
   dish_description: string
   image_src: string
+  country: string
   cooking_time?: number
   servings?: number
   tags: string[]
@@ -102,6 +118,7 @@ const recipe = reactive<Recipe>({
   title: '',
   dish_description: '',
   image_src: '',
+  country: '',
   cooking_time: undefined,
   servings: undefined,
   tags: [],

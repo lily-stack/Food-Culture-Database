@@ -7,6 +7,13 @@
 | 11/11/2025 | add Country and RecipeCountry table to erd and database and add to recipe page add edit button and route| 1.5 |
 | 11/16/2025 | Make form component for create and edit recipe page, make the edit page, fix cliackability of buttons and routing| 2 |
 | 11/17/2025 |meet with group and go over plan, divide up work, start making search page| 1 |
+| 11/30/2025 |Finished the bones of search page, created ai.ts to handle openai, changed tables in database to have embedding columns with vectors for rag| 4 |
+| 12/1/2025 |started trying to connect database to create recipe, still not done, also looked into ai search| 4 |
+| 12/6/2025 |worked on sending recipes to atabase, problem with authentication userid | 3 |
+| 12/7/2025 |worked on problem with authentication userid | 0.5 |
 
 
-total hours 12.5
+
+total hours 25
+
+password = P@ssW0rd
