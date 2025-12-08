@@ -53,8 +53,24 @@ onMounted(async () => {
   }
 })
 
-const updateRecipe = async (recipe: Recipe) => {
+const updateRecipe = async (recipe: Recipe, file: File | null) => {
   if (!recipeId) return
+
+  if (file) {
+    try {
+      const res = await fetch(`/api/s3/recipe-images?fileName=${encodeURIComponent(file.name)}&fileType=${encodeURIComponent(file.type)}`);
+      const { uploadUrl, fileUrl } = await res.json();
+      await fetch( uploadUrl, { method: 'PUT', headers: { 'Content-Type': file.type }, body: file });
+      recipe.image_src = fileUrl;
+    }
+    catch (err) {
+      console.error('Failed to upload image:', err);
+      return;
+    }
+  }
+  else if (!recipe.image_src) {
+    recipe.image_src = 'WorldFoodLogo.png';
+  }
 
   try {
     const userId = authStore.userAttributes?.sub
@@ -77,6 +93,7 @@ const updateRecipe = async (recipe: Recipe) => {
       tags: recipe.tags || [],
       rating: 0,
       ingredients: ingredientsPayload,
+      image_src: recipe.image_src
     }
 
     const token = await authStore.getAccessToken()

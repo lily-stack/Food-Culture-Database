@@ -279,6 +279,7 @@ interface RecipePayload {
   countries?: string[];
   rating?: number;
   ingredients?: IngredientPayload[];
+  image_src?: string;
 }
 
 export async function createRecipe(recipe: RecipePayload) {
@@ -292,6 +293,7 @@ export async function createRecipe(recipe: RecipePayload) {
       servings: recipe.servings ?? 1,
       recipe_steps: recipe.recipe_steps ?? "",
       creation_date: new Date().toISOString(),
+      image_src: recipe.image_src ?? ""
     })
     .select()
     .single();
@@ -456,6 +458,7 @@ router.put('/:id', requireAuth, async (req: Request, res: Response) => {
       cooking_time: req.body.cooking_time ?? 0,
       servings: req.body.servings ?? 1,
       recipe_steps: req.body.recipe_steps ?? "",
+      image_src: req.body.image_src ?? ""
     };
 
     const { data: updatedRecipe, error: updateError } = await supabase

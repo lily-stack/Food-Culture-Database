@@ -11,9 +11,10 @@
 | 12/1/2025 |started trying to connect database to create recipe, still not done, also looked into ai search| 4 |
 | 12/6/2025 |worked on sending recipes to atabase, problem with authentication userid | 3 |
 | 12/7/2025 |worked on problem with authentication userid | 0.5 |
+| 12/7/2025 | worked on createRecipe page to send data to database and editRecipe page to update database | 5.5 |
 
 
 
-total hours 25
+total hours 30.5
 
 password = P@ssW0rd

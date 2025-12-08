@@ -33,7 +33,28 @@ interface RecipeIngredientPayload {
   unit: string;
 }
 
-const submitRecipe = async (recipe: Recipe) => {
+const submitRecipe = async (recipe: Recipe, file: File | null) => {
+  if (file) {
+    try {
+      const res = await fetch(`/api/s3/recipe-images?fileName=${encodeURIComponent(file.name)}&fileType=${encodeURIComponent(file.type)}`);
+      const { uploadUrl, fileUrl } = await res.json();
+      const uploadResponse = await fetch(uploadUrl, {
+        method: 'PUT',
+        headers: { 'Content-Type': file.type },
+        body: file
+      });
+
+      if (!uploadResponse.ok) throw new Error('S3 upload failed');
+      recipe.image_src = fileUrl;
+    } catch (err) {
+      console.error('Failed to upload image: ', err);
+      return;
+    }
+  }
+  else {
+    recipe.image_src = 'WorldFoodLogo.png';
+  }
+
   try {
     const ingredientsPayload: RecipeIngredientPayload[] = recipe.ingredients.map(i => ({
       ingredient_name: i.ingredient_name || "",
@@ -56,6 +77,7 @@ const submitRecipe = async (recipe: Recipe) => {
       rating: 0,
       creation_date: new Date().toISOString(),
       ingredients: ingredientsPayload,
+      image_src: recipe.image_src || ""
     };
 
     const token = await authStore.getAccessToken();
