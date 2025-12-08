@@ -8,7 +8,8 @@ import {
     resendSignUpCode,
     getCurrentUser,
     fetchUserAttributes,
-    fetchAuthSession
+    fetchAuthSession,
+    updateUserAttributes
 } from 'aws-amplify/auth';
 
 interface UserAttributes {
@@ -16,6 +17,7 @@ interface UserAttributes {
     given_name?: string;
     family_name?: string;
     sub?: string;
+    picture?: string;
 }
 
 export const useAuthStore = defineStore('auth', () => {
@@ -148,6 +150,28 @@ export const useAuthStore = defineStore('auth', () => {
         }
     }
 
+    async function updateProfile(updatedUser: { username: string; email: string; profilePicture: string }) {
+        const attributesToUpdate = {
+            userAttributes: {
+                email: updatedUser.email,
+                given_name: updatedUser.username.split(' ')[0] || '',
+                family_name: updatedUser.username.split(' ')[1] || '',
+                picture: updatedUser.profilePicture
+            }
+        };
+
+        try {
+            await updateUserAttributes(attributesToUpdate);
+
+            // Refresh the store
+            await checkAuthStatus();
+            return { success: true };
+        } catch (err) {
+            console.error('Error updating profile:', err);
+            throw err;
+        }
+    }
+
     return {
         isAuthenticated,
         currentUser,
@@ -165,6 +189,7 @@ export const useAuthStore = defineStore('auth', () => {
         logout,
         checkAuthStatus,
         getAccessToken,
-        resendCode
+        resendCode,
+        updateProfile
     };
 });

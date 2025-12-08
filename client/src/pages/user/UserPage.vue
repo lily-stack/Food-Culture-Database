@@ -35,7 +35,7 @@
 		</div>
 
 		<!-- TODO: needs to actually be filled with recipes -->
-		<RecipeList :loading="false"/>
+		<RecipeList :recipes="undefined"/>
 
 		<!-- Edit Profile Modal -->
 		<div
@@ -61,10 +61,11 @@
 						required
 					/>
 
-					<label class="block mb-2 font-semibold">Profile Picture URL</label>
+					<label class="block mb-2 font-semibold">Profile Picture</label>
 					<input
-						v-model="userForm.profilePicture"
-						type="text"
+						type="file"
+						accept="image/*"
+						@change="handleFile"
 						class="border p-2 rounded w-full mb-4"
 					/>
 
@@ -95,12 +96,6 @@ import RecipeList from '../map/RecipeList.vue';
 import { RouterLink } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 
-interface Recipe {
-	id: number;
-	title: string;
-	imageSrc: string;
-}
-
 interface User {
 	username: string;
 	email: string;
@@ -112,7 +107,7 @@ const user = computed(() => {
 	return {
 		username: authStore.fullName ?? '',
 		email: authStore.currentUser?.signInDetails?.loginId ?? '',
-		profilePicture: authStore.currentUser?.signInDetails?.picture ?? 'https://via.placeholder.com/150'
+		profilePicture: authStore.userAttributes?.picture ?? 'Default_profile_pic.jpg'
 	}
 });
 
@@ -124,6 +119,27 @@ const userForm = reactive<User>({
 
 const editingProfile = ref(false);
 
+const selectedFile = ref<File | null>(null);
+
+async function handleFile(event: Event) {
+	const file = (event.target as HTMLInputElement).files?.[0] || null;
+	if (!file) {
+		selectedFile.value = null;
+		return;
+	}
+	selectedFile.value = file;
+	const res = await fetch(`/api/s3/pictures?fileName=${encodeURIComponent(file.name)}&fileType=${encodeURIComponent(file.type)}`);
+	const { uploadUrl, fileUrl } = await res.json();
+	await fetch(uploadUrl, {
+		method: 'PUT',
+		headers: {
+			'Content-Type': file.type
+		},
+		body: file
+	});
+	userForm.profilePicture = fileUrl;
+}
+
 // Profile editing
 function editProfile() {
 	editingProfile.value = true;
@@ -132,9 +148,8 @@ function editProfile() {
 	userForm.profilePicture = user.value.profilePicture;
 }
 
-function saveProfile() {
-	// TODO: Implement updateProfile
-	// await authStore.updateProfile(userForm);
+async function saveProfile() {
+	await authStore.updateProfile(userForm);
 	editingProfile.value = false;
 }
 
