@@ -10,5 +10,6 @@
 | 11/5/2025 | Profile page used fullname instead of username because username is userid | .5 |
 | 11/6/2025 | Work on getting the router to track where the previous page was so if a user continues as guest it will return them to their last page | 3 |
 | 11/7/2025 | Router tracks the last page and if the user is signed in and tries to access the auth page it redirects them to the home page | 2 |
+| 11/7/2025 | Researched the server we were using to understand and implement the popular reciepes stuff and fixed small bugs with the login/register logic | 5 |
 
 Total 22 Hours
