@@ -69,7 +69,7 @@ async function loadRecipes() {
 		isLoadingFirstPage.value = true;
 	}
 	try {
-		const response = await fetch(`/api/recipes?country=${props.countryCode}&page=${currentPage.value}`);
+		const response = await fetch(`/api/recipes?country=${props.countryCode}&page=${currentPage.value}&sortby=popularity`);
 		if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
 		const res = await response.json() as PaginatedRecipesResponse;

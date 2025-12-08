@@ -107,7 +107,6 @@ interface RecipesQuery {
 /**
  * Gets recipes, paginated. Currently supports filtering by country code and sorting by date.
  * TODO: Support filtering by user.
- * TODO: Support sorting by popularity (rating).
  * Example usage:
  * /api/recipes?country=kr&page=1&sortby=date
  */
