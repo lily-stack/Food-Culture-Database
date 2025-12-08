@@ -6,7 +6,11 @@
 		"strict": true,
 		"skipLibCheck": true,
 		"outDir": "dist",
-		"sourceMap": true
+		"sourceMap": true,
+		"typeRoots": [
+			"./node_modules/@types",
+			"./types"
+		]
 	},
 	"include": [
 		"src"
