@@ -13,8 +13,8 @@
 
         <!-- Image URL -->
         <div>
-          <label class="block font-semibold text-gray-700 mb-1">Image URL</label>
-          <input v-model="recipe.image_src" type="text" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+          <label class="block font-semibold text-gray-700 mb-1">Upload Image</label>
+          <input type="file" accept="image/*" @change="handleImageUpload" />
         </div>
 
         <div>
@@ -111,7 +111,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'submit', recipe: Recipe): void
+  (e: 'submit', recipe: Recipe, file: File | null ): void
 }>()
 
 const recipe = reactive<Recipe>({
@@ -135,7 +135,14 @@ watch(tagsInput, (val) => {
 const addIngredient = () => recipe.ingredients.push({ ingredient_name: '', amount_quantity: 0, unit: 'cup' })
 const removeIngredient = (index: number) => recipe.ingredients.splice(index, 1)
 
+const selectedFile = ref<File | null>(null);
+
+const handleImageUpload = async (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  selectedFile.value = target.files?.[0] || null;
+}
+
 const handleSubmit = () => {
-  emit('submit', recipe)
+  emit('submit', recipe, selectedFile.value)
 }
 </script>

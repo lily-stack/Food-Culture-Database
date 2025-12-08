@@ -153,6 +153,7 @@ export type Database = {
           creation_date: string
           dish_description: string
           embedding: string | null
+          image_src: string | null
           recipe_id: number
           recipe_steps: string
           servings: number
@@ -164,6 +165,7 @@ export type Database = {
           creation_date?: string
           dish_description: string
           embedding?: string | null
+          image_src?: string | null
           recipe_id?: number
           recipe_steps: string
           servings: number
@@ -175,6 +177,7 @@ export type Database = {
           creation_date?: string
           dish_description?: string
           embedding?: string | null
+          image_src?: string | null
           recipe_id?: number
           recipe_steps?: string
           servings?: number

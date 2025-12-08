@@ -1,7 +1,7 @@
 <template>
 	<div class="p-3 flex justify-between gap-2 cursor-pointer rounded-md hover:bg-gray-50 transition-colors">
 		<div class="flex gap-3 grow min-w-0">
-			<img :src="recipe.img_src" class="w-24 h-24 rounded-md object-cover border border-gray-200" />
+			<img :src="recipe.image_src" class="w-24 h-24 rounded-md object-cover border border-gray-200" />
 			<div class="flex flex-col grow min-w-0">
 				<h4 class="text-gray-900 truncate">{{ recipe.title }}</h4>
 				<div class="text-xs text-gray-600 flex flex-row">
