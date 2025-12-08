@@ -7,5 +7,8 @@
 		"shared"
 	],
 	"author": "JWilkerson",
-	"license": "ISC"
+	"license": "ISC",
+	"devDependencies": {
+		"@vue/tsconfig": "^0.8.1"
+	}
 }

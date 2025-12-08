@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"target": "ES2022",
 		"useDefineForClassFields": true,
-		"module": "CommonJS",
+		"module": "nodenext",
 		"lib": [
 			"ES2022"
 		],

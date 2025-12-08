@@ -165,38 +165,66 @@ async function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response)
 	res.status(200).json(body);
 }
 
+export async function getRecipeById(req: Request, res: Response) {
+  const recipeId = req.params.id;
+  if (!recipeId) return res.status(400).send("Missing recipe ID");
 
-/**
- * Gets a specific recipe by id.
- * Example usage:
- * /api/recipes/1
- * (where 1 is the recipe_id)
- */
-async function getRecipeById(req: Request, res: Response<Recipe>) {
-	const recipeId = req.params.id;
-	if (recipeId == null) {
-		res.status(400).send();
-	}
+  const recipeIdNum = Number(recipeId);
+  if (isNaN(recipeIdNum)) return res.status(400).send("Invalid recipe ID");
 
-	const { data, error } = await supabase
-		.from('recipe_model')
-		.select(`*`)
-		.eq('recipe_id', +recipeId)
-		.single();
+  try {
+    const { data: recipeData, error: recipeError } = await supabase
+      .from("recipe_model") // ensure correct table name
+      .select("*")
+      .eq("recipe_id", recipeIdNum)
+      .single();
 
-	if (error || !data) {
-		res.status(404).send();
-	} else {
-		const recipe = {
-			...data,
-			img_src: "",
-			ratings: data.rating,
-			countries: data.countries as CountryCode[]
-		} as Recipe
-		res.status(200).send(recipe);
-	}
+    if (recipeError || !recipeData) {
+      return res.status(404).send("Recipe not found");
+    }
+
+    // Ingredients
+    const { data: ingredientsData } = await supabase
+      .from("RecipeIngredient")
+      .select(`amount_quantity, Ingredient(ingredient_id, ingredient_name)`)
+      .eq("recipe_id", recipeIdNum);
+
+    const ingredients = (ingredientsData ?? []).map((ri: any) => ({
+      ingredient_id: ri.Ingredient?.ingredient_id ?? 0,
+      ingredient_name: ri.Ingredient?.ingredient_name ?? "",
+      amount_quantity: ri.amount_quantity ?? 0
+    }));
+
+    // Tags
+    const { data: tagsData } = await supabase
+      .from("RecipeTag")
+      .select(`Tag(tag_id, tag_name)`)
+      .eq("recipe_id", recipeIdNum);
+
+    const tags = (tagsData ?? []).map((t: any) => t.Tag?.tag_name ?? "");
+
+    // Countries
+    const { data: countriesData } = await supabase
+      .from("RecipeCountry")
+      .select("country_code")
+      .eq("recipe_id", recipeIdNum);
+
+    const countries = (countriesData ?? []).map((c: any) => c.country_code);
+
+    const response = {
+      ...recipeData,
+      recipe_steps: recipeData.recipe_steps ? recipeData.recipe_steps.split("\n") : [],
+      ingredients,
+      tags,
+      countries
+    };
+
+    res.status(200).json(response);
+  } catch (error: any) {
+    console.error("Error fetching recipe:", error);
+    res.status(500).send("Internal Server Error");
+  }
 }
-
 
 async function getRecipeOfTheDay(req: Request, res: Response<Recipe>) {
 	const today = new Date();
@@ -402,17 +430,6 @@ router.post(
     }
   }
 );
-
-
-// router.post("/", async (req: Request<{}, {}, RecipePayload>, res: Response) => {
-//   try {
-//     const recipeData = await createRecipe(req.body);
-//     res.status(201).json(recipeData);
-//   } catch (error: any) {
-//     console.error("Error creating recipe:", error);
-//     res.status(500).send(error.message);
-//   }
-// });
 
 export { router };
 

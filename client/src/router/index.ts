@@ -23,6 +23,7 @@ const router = createRouter({
 		},
 		{
 			path: '/recipes/:recipeid',
+			name: 'RecipePage',
 			component: RecipePage,
 		},
 		{

@@ -28,7 +28,7 @@
         <div class="flex gap-2 items-center text-gray-700 flex-wrap mb-1">
           <span class="font-semibold">Country of Origin:</span>
           
-          <template v-for="country in state.recipe.countries" :key="country.country_id">
+          <template v-for="country in state.recipe.countries" :key="country">
             <span class="bg-gray-200 text-gray-800 text-sm px-2 py-1 rounded-full">
               {{ country }}
             </span>
@@ -38,7 +38,7 @@
         <div class="flex gap-2 items-center text-gray-700 flex-wrap mb-1">
           <span class="font-semibold">Tags:</span>
           
-          <template v-for="tag in state.recipe.tags" :key="tag.tag_id">
+          <template v-for="tag in state.recipe.tags" :key="tag">
             <span class="bg-gray-200 text-gray-800 text-sm px-2 py-1 rounded-full">
               {{ tag }}
             </span>
@@ -86,6 +86,7 @@
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import axios from 'axios'
 
 
 
@@ -127,40 +128,68 @@ const state = reactive({
 // TODO: Replace with real API later ---
 //const response = await axios.get(`/api/recipes/${route.params.recipeid}`)
 //recipe.value = response.data
+// const fetchRecipe = async () => {
+//   state.loading = true
+
+//   // TODO: Replace this with real API call to /api/recipes/:recipeid
+//   //how to save images?
+//   const mockRecipe: Recipe = {
+//     image_src: "https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_4:3/k%2FPhoto%2FRecipes%2F2024-03-bimbimbap%2Fbibimbap-074",
+//     recipe_id: 1,
+//     title: 'Spaghetti Bolognese',
+//     dish_description: 'A classic Italian pasta dish with rich meat sauce.',
+//     cooking_time: 45,
+//     servings: 4,
+//     recipe_steps: [
+//       'Cook spaghetti according to package instructions.',
+//       'Sauté onions and garlic in olive oil.',
+//       'Add ground beef and cook until browned.',
+//       'Add tomato sauce and simmer for 20 minutes.',
+//       'Serve sauce over spaghetti and sprinkle with Parmesan.'
+//     ],
+//     ingredients: [
+//       { ingredient_id: 1, ingredient_name: 'Spaghetti', amount_quantity: 200 },
+//       { ingredient_id: 2, ingredient_name: 'Ground beef', amount_quantity: 300 },
+//       { ingredient_id: 3, ingredient_name: 'Tomato sauce', amount_quantity: 400 },
+//       { ingredient_id: 4, ingredient_name: 'Onion', amount_quantity: 1 },
+//       { ingredient_id: 5, ingredient_name: 'Garlic', amount_quantity: 2 },
+//     ],
+//     creator_name: "Lily Hill",
+//     tags: ["Italy", "Pasta"],
+//     rating: 3.8,
+//     countries: ["Italy", "France"]
+//   }
+
+//   state.recipe = mockRecipe
+//   state.loading = false
+// }
+
 const fetchRecipe = async () => {
   state.loading = true
+  try {
+    const recipeId = state.route.params.recipeid
+    if (!recipeId) {
+      state.recipe = null;
+      state.loading = false;
+      return;
+    }
+    const { data } = await axios.get(`/api/recipes/${recipeId}`)
+    
+    // Make sure steps are an array
+    const recipe: Recipe = {
+      ...data,
+      recipe_steps: Array.isArray(data.recipe_steps)
+        ? data.recipe_steps
+        : data.recipe_steps.split("\n") // if stored as text
+    }
 
-  // TODO: Replace this with real API call to /api/recipes/:recipeid
-  //how to save images?
-  const mockRecipe: Recipe = {
-    image_src: "https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_4:3/k%2FPhoto%2FRecipes%2F2024-03-bimbimbap%2Fbibimbap-074",
-    recipe_id: 1,
-    title: 'Spaghetti Bolognese',
-    dish_description: 'A classic Italian pasta dish with rich meat sauce.',
-    cooking_time: 45,
-    servings: 4,
-    recipe_steps: [
-      'Cook spaghetti according to package instructions.',
-      'Sauté onions and garlic in olive oil.',
-      'Add ground beef and cook until browned.',
-      'Add tomato sauce and simmer for 20 minutes.',
-      'Serve sauce over spaghetti and sprinkle with Parmesan.'
-    ],
-    ingredients: [
-      { ingredient_id: 1, ingredient_name: 'Spaghetti', amount_quantity: 200 },
-      { ingredient_id: 2, ingredient_name: 'Ground beef', amount_quantity: 300 },
-      { ingredient_id: 3, ingredient_name: 'Tomato sauce', amount_quantity: 400 },
-      { ingredient_id: 4, ingredient_name: 'Onion', amount_quantity: 1 },
-      { ingredient_id: 5, ingredient_name: 'Garlic', amount_quantity: 2 },
-    ],
-    creator_name: "Lily Hill",
-    tags: ["Italy", "Pasta"],
-    rating: 3.8,
-    countries: ["Italy", "France"]
+    state.recipe = recipe
+  } catch (error) {
+    console.error("Error fetching recipe:", error)
+    state.recipe = null
+  } finally {
+    state.loading = false
   }
-
-  state.recipe = mockRecipe
-  state.loading = false
 }
 
 
