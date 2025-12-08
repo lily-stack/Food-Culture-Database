@@ -1,5 +1,8 @@
 <template>
-	<div class="py-4 flex justify-center z-20">
+	<div
+		class="py-4 flex justify-center z-20"
+		:class="{'bg-linear-to-b from-white to-transparent': !route.meta.hideNavbarGradient}"
+	>
 		<div
 			class="bg-white grow shadow-lg rounded-lg h-12 border border-gray-200 flex gap-2 items-center justify-between pl-2 pr-4 py-2 text-gray-600 transition-colors font-semibold">
 			<div class="w-10 h-10 rounded-full overflow-hidden shrink-0">
@@ -44,11 +47,12 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useAuthStore } from '@/stores/auth';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import NavbarOption from './NavbarOption.vue';
 import NavbarDropdown from './NavbarDropdown.vue';
 
 const router = useRouter();
+const route = useRoute();
 const authStore = useAuthStore();
 
 const isUserOptionsOpen = ref<boolean>(false);

@@ -20,6 +20,7 @@ const router = createRouter({
 		{
 			path: '/map',
 			component: MapPage,
+			meta: { hideNavbarGradient: true }
 		},
 		{
 			path: '/recipes/:recipeid',
