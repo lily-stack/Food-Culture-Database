@@ -412,6 +412,34 @@ export async function createRecipe(recipe: RecipePayload) {
   return recipeData;
 }
 
+router.get('/user/:userid', requireAuth, async (req: Request, res: Response) => {
+  const userId = req.params.userid;
+
+  if (!userId) return res.status(400).send("Missing user ID");
+
+  try {
+    const { data, error } = await supabase
+      .from("recipe_model")
+      .select("*")
+      .eq("user_id", userId);
+
+    if (error) {
+      return res.status(500).send(error.message);
+    }
+
+    const recipes = (data ?? []).map(row => ({
+      ...row,
+      image_src: row.image_src || ""
+    }));
+
+    res.json(recipes);
+  } catch (err: any) {
+    console.error("Error:", err);
+    res.status(500).send("Internal server error");
+  }
+});
+
+
 router.post(
   "/",
   requireAuth,

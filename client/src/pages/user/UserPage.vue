@@ -34,8 +34,7 @@
 			</RouterLink>
 		</div>
 
-		<!-- TODO: needs to actually be filled with recipes -->
-		<RecipeList :recipes="undefined"/>
+		<RecipeList :recipes="myRecipes"/>
 
 		<!-- Edit Profile Modal -->
 		<div
@@ -91,17 +90,38 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, ref, onMounted } from 'vue';
 import RecipeList from '../map/RecipeList.vue';
 import { RouterLink } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+
+const authStore = useAuthStore();
+const myRecipes = ref(undefined);
+
+onMounted(async () => {
+  const userId = authStore.userAttributes?.sub;
+  if (!userId) return;
+
+  const token = await authStore.getAccessToken();
+
+  const res = await fetch(`/api/recipes/user/${userId}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+
+  if (!res.ok) {
+    console.error("Failed to fetch user recipes");
+    myRecipes.value = [];
+    return;
+  }
+
+  myRecipes.value = await res.json();
+});
 
 interface User {
 	username: string;
 	email: string;
 	profilePicture: string;
 }
-const authStore = useAuthStore();
 
 const user = computed(() => {
 	return {
