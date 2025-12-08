@@ -20,7 +20,7 @@ export async function verifyCognitoToken(token: string) {
   try {
     // 1. Load JWKS if not cached
     if (!jwksCache) {
-      const region = "us-east-1";                
+      const region = "us-east-1";
       const userPoolId = "us-east-1_aT4dqxsZq";
 
       const url = `https://cognito-idp.${region}.amazonaws.com/${userPoolId}/.well-known/jwks.json`;
@@ -72,7 +72,7 @@ export async function requireAuth(
     if (!decoded || typeof decoded === "string" || !("sub" in decoded)) {
       res.status(401).send("Invalid token payload");
       return;
-    } 
+    }
 
     if (!decoded || typeof decoded === "string" || !("sub" in decoded)) {
       res.status(401).send("Invalid token payload");
@@ -150,7 +150,7 @@ async function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response)
 
 	const recipes: Recipe[] = (data ?? []).map(row => ({
 		...row,
-		img_src: ""
+		image_src: ""
 	}) as Recipe);
 
 	const totalPages = count ? Math.ceil(count / limit) : 0;
@@ -234,7 +234,7 @@ async function getRecipeOfTheDay(req: Request, res: Response<Recipe>) {
 		.from('Recipe')
 		.select('*', { count: 'exact', head: true })
 		// Only consider recipes from before today in the count (so that creating a new recipe will not change this count)
-		.lt('creation_date', today.toISOString()); 
+		.lt('creation_date', today.toISOString());
 
 	if (countError || numRecipes == null) {
 		res.status(500).send();
@@ -256,15 +256,15 @@ async function getRecipeOfTheDay(req: Request, res: Response<Recipe>) {
 	} else {
 		const recipe = {
 			...data,
-			img_src: "https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_4:3/k%2FPhoto%2FRecipes%2F2024-03-bimbimbap%2Fbibimbap-074",
+			image_src: "https://cdn.apartmenttherapy.info/image/upload/f_jpg,q_auto:eco,c_fill,g_auto,w_1500,ar_4:3/k%2FPhoto%2FRecipes%2F2024-03-bimbimbap%2Fbibimbap-074",
 		} as Recipe
 		res.status(200).send(recipe)
 	}
 }
 
 interface IngredientPayload {
-  ingredient_name: string; 
-  amount_quantity?: number; 
+  ingredient_name: string;
+  amount_quantity?: number;
   unit?: string;
 }
 

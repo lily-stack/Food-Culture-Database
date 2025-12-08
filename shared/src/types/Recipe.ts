@@ -9,7 +9,7 @@ export interface Recipe {
 	cooking_time: number
 	servings: number
 	recipe_steps: string
-	img_src: string
+	image_src: string
 	rating: number
 	countries: CountryCode[]
 }
