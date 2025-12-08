@@ -149,8 +149,7 @@ async function getRecipes(req: Request<{}, {}, {}, RecipesQuery>, res: Response)
 	}
 
 	const recipes: Recipe[] = (data ?? []).map(row => ({
-		...row,
-		img_src: ""
+		...row
 	}) as Recipe);
 
 	const totalPages = count ? Math.ceil(count / limit) : 0;
@@ -255,8 +254,7 @@ async function getRecipeOfTheDay(req: Request, res: Response<Recipe>) {
 		res.status(500).send();
 	} else {
 		const recipe = {
-			...data,
-			img_src: "",
+			...data
 		} as Recipe
 		res.status(200).send(recipe)
 	}
