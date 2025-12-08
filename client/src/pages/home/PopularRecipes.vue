@@ -13,12 +13,15 @@
 			</template>
 			<template v-else>
 				<TransitionGroup name="fade" appear>
-					<RecipeListItemContent 
-						v-for="(recipe, index) in recipes"
+					<RouterLink v-for="recipe in recipes"
 						:key="recipe.recipe_id"
-						:recipe="recipe"
-						:show-arrow="false"
-					/>
+						:to="`/recipes/${recipe.recipe_id}`"
+					>
+						<RecipeListItemContent
+							:recipe="recipe"
+							:show-arrow="false"
+						/>
+					</RouterLink>
 				</TransitionGroup>
 			</template>
 		</div>
