@@ -48,7 +48,7 @@ A recipe sharing platform. Users can create accounts, submit recipes, view and r
 Setup steps
 - in `server`:
 	- run `npm install`
-	- create `.env` file with SUPABASE_URL and SUPABASE_KEY
+	- create `.env` file with SUPABASE_URL, SUPABASE_KEY, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, and S3_BUCKET_NAME
 	- any time the supabase schema changes you need to run `npm run db:getTypes` to update the local typescript types
 	- use `npm run dev` to start dev server
 - in `client`:
