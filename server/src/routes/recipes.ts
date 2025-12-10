@@ -210,12 +210,20 @@ export async function getRecipeById(req: Request, res: Response) {
 
     const countries = (countriesData ?? []).map((c: any) => c.country_code);
 
+    const {data: createrData} = await supabase
+      .from("recipe_model")
+      .select("user_id")
+      .eq("recipe_id", recipeIdNum)
+      .single();
+
+    const creater = createrData?.user_id ?? null;
+
     const response = {
       ...recipeData,
       recipe_steps: recipeData.recipe_steps ? recipeData.recipe_steps.split("\n") : [],
       ingredients,
       tags,
-      countries
+      countries,
     };
 
     res.status(200).json(response);

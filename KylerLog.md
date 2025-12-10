@@ -11,5 +11,6 @@
 | 11/6/2025 | Work on getting the router to track where the previous page was so if a user continues as guest it will return them to their last page | 3 |
 | 11/7/2025 | Router tracks the last page and if the user is signed in and tries to access the auth page it redirects them to the home page | 2 |
 | 11/7/2025 | Researched the server we were using to understand and implement the popular reciepes stuff and fixed small bugs with the login/register logic | 5 |
+| 11/9/2025 | Tried to display the users name and prevent any user from editing a recipe but do to having to set up aws-sdk and having some challenges with IAM users I just have it display the userid, at a future point I would love to fix this issue I just don't have the time in this semester | 4 |
 
-Total 22 Hours
+Total 31 Hours

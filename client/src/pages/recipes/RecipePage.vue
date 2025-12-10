@@ -46,7 +46,7 @@
         </div>
 
         <div class="flex gap-4 text-gray-700 mb-6 items-center">
-          <span>Created By {{ state.recipe?.creator_name }}</span>
+          <span>Created By {{ state.recipe.user_id }}</span>
 
           <button
             v-if="state.isCreator"
@@ -109,6 +109,7 @@ interface Recipe {
   tags: string[]
   rating: number
   countries: string[]
+  creator: string
 }
 
 interface RouteParams {
