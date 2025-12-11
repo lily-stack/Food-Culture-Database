@@ -12,7 +12,8 @@ Recipes Worldwide is a recipe sharing platform that emphasizes discovering the c
 ![](architecture.png)
 
 ## Demo Video
-[Watch the video](worldwiderecipesDemoVideo.mp4)
+[Watch the video](https://byu.box.com/s/9bl8w72hnnsnpncolybvhurpa43vofmb)
+
 ## Learnings
 - Trouble with mixed tech stack
 	- Could not use RLS; Supabase RLS is designed to work with Supabase Auth, not Cognito
