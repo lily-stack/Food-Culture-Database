@@ -18,4 +18,3 @@
 
 total hours 33
 
-password = P@ssW0rd
