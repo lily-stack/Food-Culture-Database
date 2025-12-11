@@ -59,9 +59,4 @@ Setup steps
 	- Anytime any code in `shared` is updated, you must run `npm run build` for those changes to be accessible from `client` and `server`
 
 
-## By 11/18
-## Kyler = add login capability and continue as guest
-## Preston = expressjs code --> backend
-## Grayden = S3 --> 1 bucket with folders
-## Lily = welcome page = home --> recipe of the day --> search page --> natural language ai, filtering
  

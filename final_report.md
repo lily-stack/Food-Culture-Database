@@ -8,6 +8,9 @@ Recipes Worldwide is a recipe sharing platform that emphasizes discovering the c
 ### ERD
 ![](erd.png)
 
+### Technology Interaction Diagram
+![](architecture.png)
+
 ## Demo Video
 
 ## Learnings
@@ -28,7 +31,7 @@ Recipes Worldwide is a recipe sharing platform that emphasizes discovering the c
 Planned but not implemented
 
 ## AI Assistance in Development
-We used AI to familiarize ourselves with the different technologies in our stack and explore our design options. For example, I (Preston) asked AI how we might structure our monorepo such that the client and server modules can share TypeScript types, in order to remove duplication. I also used AI to research options for libraries, such as D3, the JavaScript data visualization library that powers the map page.
+We used AI to familiarize ourselves with the different technologies in our stack and explore our design options. For example, I (Preston) asked AI how we might structure our monorepo such that the client and server modules can share TypeScript types, in order to remove duplication. I also used AI to research options for libraries, such as D3, the JavaScript data visualization library that powers the map page. Lily did similar things like using AI to suggest different ways to structure code and also to help explain error messages.
 
 ## Why This Project Interests Us
 Food is a universal language that brings people together, and all of us are passionate about exploring different cuisines from around the world. We wanted to create a platform that makes discovering authentic recipes from specific countries and regions both intuitive and exciting. 
